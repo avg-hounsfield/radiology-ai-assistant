@@ -17,6 +17,7 @@ import time
 import logging
 import re
 import uuid
+import random
 from typing import List, Dict, Any
 
 # Add src to path for imports

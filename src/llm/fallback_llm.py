@@ -52,7 +52,7 @@ class FallbackLLMManager:
             if condition.replace("_", " ") in query_lower or any(sign in query_lower for sign in info["ct_signs"]):
                 content = self._format_medical_response(condition, info, query)
                 return {
-                    "content": content,
+                    "answer": content,
                     "sources": [],
                     "conversation_history": conversation_history or []
                 }
@@ -68,7 +68,7 @@ class FallbackLLMManager:
             content = self._generic_response(query)
 
         return {
-            "content": content,
+            "answer": content,
             "sources": [],
             "conversation_history": conversation_history or []
         }
@@ -151,7 +151,7 @@ This is the fallback response system. The full AI capabilities are not available
     def chat(self, messages: List[Dict], **kwargs) -> Dict:
         """Chat interface compatible with MedicalLLMManager"""
         if not messages:
-            return {"content": "Please provide a question."}
+            return {"answer": "Please provide a question."}
 
         last_message = messages[-1].get("content", "")
         response = self.generate_response(last_message, conversation_history=messages[:-1])
