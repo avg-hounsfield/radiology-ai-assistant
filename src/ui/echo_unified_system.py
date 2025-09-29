@@ -2893,78 +2893,20 @@ def render_study_hub():
     tab1, tab2, tab3, tab4 = st.tabs(["🎯 Crack the Core", "🃏 Flashcards", "📖 Lessons", "🎥 Video Teaching"])
 
     with tab1:
-        if submode == "crack_core" or st.session_state.get('show_crack_core', False):
-            render_crack_the_core()
-        else:
-            st.info("**🎯 Crack the Core Method**: Master radiology through systematic pathology review")
-            st.markdown("**Three-Step Approach for Each Pathology:**")
-            st.markdown("1. **What is it?** - Definition and pathophysiology")
-            st.markdown("2. **What is it associated with?** - Clinical presentations and risk factors")
-            st.markdown("3. **What's the next step?** - Imaging recommendations and management")
-
-            if st.button("🚀 Start Crack the Core", type="primary"):
-                st.session_state.study_submode = "crack_core"
-                st.session_state.show_crack_core = True
-                st.rerun()
+        # Auto-activate Crack the Core when tab is selected
+        render_crack_the_core()
 
     with tab2:
-        if submode == "flashcards":
-            render_flashcard_mode()
-        else:
-            st.info("**🃏 Flashcard Learning**: Spaced repetition with your imported Anki decks")
-
-            try:
-                # Show flashcard stats
-                flashcard_manager = st.session_state.systems.get('flashcards')
-                if flashcard_manager:
-                    total_cards = len(flashcard_manager.cards)
-                    due_cards = len(flashcard_manager.get_due_cards())
-
-                    col1, col2, col3 = st.columns(3)
-                    with col1:
-                        st.metric("Total Cards", total_cards)
-                    with col2:
-                        st.metric("Due Today", due_cards)
-                    with col3:
-                        st.metric("Study Streak", "5 days")  # Placeholder
-
-            except:
-                pass
-
-            if st.button("🚀 Start Flashcard Review", type="primary"):
-                st.session_state.study_submode = "flashcards"
-                st.rerun()
+        # Auto-activate Flashcards when tab is selected
+        render_flashcard_mode()
 
     with tab3:
-        if submode == "lessons":
-            render_lesson_reader()
-        else:
-            st.info("**📖 Lesson Reading**: Comprehensive radiology lessons with AI narration")
-            st.markdown("Choose from core radiology topics with text-to-speech support")
-
-            if st.button("🚀 Browse Lessons", type="primary"):
-                st.session_state.study_submode = "lessons"
-                st.rerun()
+        # Auto-activate Lessons when tab is selected
+        render_lesson_reader()
 
     with tab4:
-        if submode == "videos":
-            render_video_mode()
-        else:
-            st.info("**🎥 Video Teaching**: Educational videos with enhanced metadata")
-
-            try:
-                # Show video stats
-                video_manager = st.session_state.systems.get('video')
-                if video_manager:
-                    videos = video_manager.scan_local_videos()
-                    total_videos = sum(len(v) for v in videos.values())
-                    st.metric("Available Videos", total_videos)
-            except:
-                pass
-
-            if st.button("🚀 Browse Videos", type="primary"):
-                st.session_state.study_submode = "videos"
-                st.rerun()
+        # Auto-activate Video Teaching when tab is selected
+        render_video_mode()
 
 def render_reference_hub():
     """Render the streamlined Reference Hub for workstation use"""
