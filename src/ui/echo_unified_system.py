@@ -398,6 +398,64 @@ def initialize_session_state():
     if 'reference_submode' not in st.session_state:
         st.session_state.reference_submode = "search"
 
+def filter_decks_by_category(all_decks, category_filter):
+    """Filter flashcard decks based on radiology category"""
+    if category_filter == "All Categories":
+        return all_decks
+
+    # Create keywords for each category
+    category_keywords = {
+        "Cardiothoracic": ["cardio", "thoracic", "chest", "heart", "lung", "pulmonary", "cardiac"],
+        "Neuroradiology": ["neuro", "brain", "head", "spine", "neurological", "cranial"],
+        "Musculoskeletal (MSK)": ["msk", "musculoskeletal", "bone", "joint", "orthopedic", "spine"],
+        "Abdominal & Pelvic": ["abdominal", "abdomen", "pelvic", "pelvis", "gi", "gastrointestinal"],
+        "Breast Imaging": ["breast", "mammography", "mammogram"],
+        "Pediatric Radiology": ["pediatric", "paediatric", "child", "infant", "baby"],
+        "Nuclear Medicine": ["nuclear", "pet", "spect", "scan", "isotope"],
+        "Physics & Safety": ["physics", "safety", "radiation", "dose", "protocol"],
+        "Interventional Radiology": ["interventional", "intervention", "procedure", "biopsy"],
+        "Emergency Radiology": ["emergency", "trauma", "acute", "urgent"]
+    }
+
+    keywords = category_keywords.get(category_filter, [])
+    filtered_decks = []
+
+    for deck_name in all_decks:
+        deck_lower = deck_name.lower()
+        if any(keyword in deck_lower for keyword in keywords):
+            filtered_decks.append(deck_name)
+
+    return filtered_decks
+
+def filter_videos_by_category(radiology_videos, category_filter):
+    """Filter videos based on radiology category"""
+    if category_filter == "All Categories":
+        return radiology_videos
+
+    # Map category filter to video section names
+    category_to_section = {
+        "Cardiothoracic": ["Chest", "Cardiac", "Thoracic"],
+        "Neuroradiology": ["Neuro", "Brain", "Head", "Spine"],
+        "Musculoskeletal (MSK)": ["MSK", "Bone", "Joint", "Orthopedic"],
+        "Abdominal & Pelvic": ["Abdomen", "Pelvis", "GI", "Gastrointestinal"],
+        "Breast Imaging": ["Breast", "Mammography"],
+        "Pediatric Radiology": ["Pediatric", "Child"],
+        "Nuclear Medicine": ["Nuclear", "PET", "SPECT"],
+        "Physics & Safety": ["Physics", "Safety", "QA"],
+        "Interventional Radiology": ["Interventional", "IR"],
+        "Emergency Radiology": ["Emergency", "Trauma"]
+    }
+
+    target_sections = category_to_section.get(category_filter, [])
+    filtered_videos = {}
+
+    for section_name, video_data in radiology_videos.items():
+        section_lower = section_name.lower()
+        if any(target.lower() in section_lower for target in target_sections):
+            filtered_videos[section_name] = video_data
+
+    return filtered_videos
+
 def render_sidebar():
     """Render the streamlined sidebar with two main modes"""
     with st.sidebar:
@@ -1643,6 +1701,12 @@ def render_video_mode():
 
     st.subheader("Video Learning Center")
 
+    # Get category filter from session state
+    category_filter = st.session_state.get('selected_category', 'All Categories')
+
+    if category_filter != "All Categories":
+        st.info(f"📋 Filtering videos for: **{category_filter}**")
+
     if not st.session_state.systems:
         st.error("Video system not available")
         return
@@ -1657,21 +1721,27 @@ def render_video_mode():
     # Categorize videos by radiology section
     radiology_videos = categorize_videos_by_radiology_section(videos)
 
+    # Filter videos based on category selection
+    if category_filter != "All Categories":
+        filtered_videos = filter_videos_by_category(radiology_videos, category_filter)
+    else:
+        filtered_videos = radiology_videos
+
     # Filters
     col1, col2 = st.columns([1, 2])
 
     with col1:
         st.markdown("### Filters")
 
-        # Radiology section filter
-        sections = list(radiology_videos.keys())
+        # Radiology section filter - use filtered videos
+        sections = list(filtered_videos.keys())
         selected_section = st.selectbox("Radiology Section", ["All"] + sections)
 
         # Search filter
         search_term = st.text_input("Search videos", placeholder="Enter keywords...")
 
         # Stats
-        total_videos = sum(len(data['videos']) for data in radiology_videos.values())
+        total_videos = sum(len(data['videos']) for data in filtered_videos.values())
         st.info(f"📹 {total_videos} videos available")
 
     with col2:
@@ -1679,9 +1749,9 @@ def render_video_mode():
 
         # Filter videos by section
         if selected_section == "All":
-            sections_to_show = radiology_videos
+            sections_to_show = filtered_videos
         else:
-            sections_to_show = {selected_section: radiology_videos[selected_section]}
+            sections_to_show = {selected_section: filtered_videos[selected_section]}
 
         # Apply search filter
         if search_term:
@@ -2444,6 +2514,12 @@ def render_flashcard_mode():
     """Render the flashcard study mode with Anki-style spaced repetition"""
     st.markdown("# 🃏 Flashcard Study Mode")
 
+    # Get category filter from session state
+    category_filter = st.session_state.get('selected_category', 'All Categories')
+
+    if category_filter != "All Categories":
+        st.info(f"📋 Filtering flashcards for: **{category_filter}**")
+
     st.info("**Anki-Style Spaced Repetition Learning** - Review imported flashcards with intelligent scheduling for optimal retention")
 
     flashcard_manager = st.session_state.systems.get('flashcards')
@@ -2455,8 +2531,17 @@ def render_flashcard_mode():
     # Get deck statistics
     all_decks = flashcard_manager.get_all_decks()
 
-    if not all_decks:
-        st.warning("No flashcard decks found. Import Anki decks to get started!")
+    # Filter decks based on category selection
+    if category_filter != "All Categories":
+        filtered_decks = filter_decks_by_category(all_decks, category_filter)
+    else:
+        filtered_decks = all_decks
+
+    if not filtered_decks:
+        if category_filter != "All Categories":
+            st.warning(f"No flashcard decks found for {category_filter}. Try selecting 'All Categories' or import relevant decks.")
+        else:
+            st.warning("No flashcard decks found. Import Anki decks to get started!")
 
         col1, col2 = st.columns(2)
         with col1:
@@ -2482,10 +2567,10 @@ def render_flashcard_mode():
         stats = flashcard_manager.get_deck_stats(deck_name)
         deck_stats[deck_name] = stats
 
-    # Deck selector with stats
+    # Deck selector with stats - use filtered decks
     selected_deck = st.selectbox(
         "Choose a deck to study:",
-        ["All Decks"] + all_decks,
+        ["All Decks"] + filtered_decks,
         format_func=lambda x: f"{x} ({deck_stats.get(x, {}).get('total_cards', 0)} cards)" if x != "All Decks" else x
     )
 
@@ -2759,6 +2844,37 @@ def render_study_hub():
     st.title("📚 Study Mode")
     st.markdown("*Master radiology concepts through structured learning*")
 
+    # Radiology Category Filter
+    col1, col2 = st.columns([2, 3])
+    with col1:
+        category_filter = st.selectbox(
+            "🎯 Filter by Radiology Area:",
+            options=[
+                "All Categories",
+                "Cardiothoracic",
+                "Neuroradiology",
+                "Musculoskeletal (MSK)",
+                "Abdominal & Pelvic",
+                "Breast Imaging",
+                "Pediatric Radiology",
+                "Nuclear Medicine",
+                "Physics & Safety",
+                "Interventional Radiology",
+                "Emergency Radiology"
+            ],
+            index=0,
+            key="radiology_category_filter"
+        )
+
+    with col2:
+        if category_filter != "All Categories":
+            st.info(f"📋 Filtering content for: **{category_filter}**")
+        else:
+            st.info("📋 Showing all radiology content")
+
+    # Store selected category in session state
+    st.session_state.selected_category = category_filter
+
     # Get current submode
     submode = st.session_state.get('study_submode', 'crack_core')
 
@@ -2891,9 +3007,34 @@ def render_crack_the_core():
     st.subheader("🎯 Crack the Core")
     st.markdown("*Master radiology through systematic pathology review*")
 
-    # Core exam areas
-    areas = list(CORE_EXAM_CONFIG['exam_areas'].keys())
-    selected_area = st.selectbox("Choose Radiology Area", areas)
+    # Get category filter from session state
+    category_filter = st.session_state.get('selected_category', 'All Categories')
+
+    # Core exam areas - filter based on category selection
+    all_areas = list(CORE_EXAM_CONFIG['exam_areas'].keys())
+
+    # Map category filter to area names
+    category_mapping = {
+        "All Categories": all_areas,
+        "Cardiothoracic": ["Cardiothoracic"],
+        "Neuroradiology": ["Neuroradiology"],
+        "Musculoskeletal (MSK)": ["Musculoskeletal (MSK)"],
+        "Abdominal & Pelvic": ["Abdominal & Pelvic"],
+        "Breast Imaging": ["Breast Imaging"],
+        "Pediatric Radiology": ["Pediatric Radiology"],
+        "Nuclear Medicine": ["Nuclear Medicine"],
+        "Physics & Safety": ["Physics & Safety"],
+        "Interventional Radiology": ["Interventional Radiology"],
+        "Emergency Radiology": ["Emergency Radiology"]
+    }
+
+    # Filter areas based on category selection
+    filtered_areas = category_mapping.get(category_filter, all_areas)
+
+    if category_filter != "All Categories":
+        st.info(f"📋 Showing pathologies for: **{category_filter}**")
+
+    selected_area = st.selectbox("Choose Radiology Area", filtered_areas)
 
     # Common pathologies for each area (simplified list)
     pathologies = {
@@ -3011,17 +3152,38 @@ def render_pathology_breakdown(area, pathology):
 def render_lesson_reader():
     """Render lesson reading interface with AI narration"""
     st.subheader("📖 Radiology Lessons")
+
+    # Get category filter from session state
+    category_filter = st.session_state.get('selected_category', 'All Categories')
+
+    if category_filter != "All Categories":
+        st.info(f"📋 Filtering lessons for: **{category_filter}**")
+
     st.info("**Lesson Reading**: Comprehensive text lessons with optional AI narration")
 
-    # Sample lessons (in practice, these would be loaded from files)
-    lessons = {
-        "Chest X-Ray Interpretation": "A systematic approach to reading chest radiographs...",
-        "CT Abdomen Protocols": "Understanding optimal CT protocols for abdominal imaging...",
-        "MRI Brain Basics": "Fundamentals of brain MRI interpretation...",
-        "Mammography Screening": "Approach to screening mammography interpretation..."
+    # Sample lessons with categories (in practice, these would be loaded from files)
+    all_lessons = {
+        "Chest X-Ray Interpretation": {"content": "A systematic approach to reading chest radiographs...", "category": "Cardiothoracic"},
+        "CT Abdomen Protocols": {"content": "Understanding optimal CT protocols for abdominal imaging...", "category": "Abdominal & Pelvic"},
+        "MRI Brain Basics": {"content": "Fundamentals of brain MRI interpretation...", "category": "Neuroradiology"},
+        "Mammography Screening": {"content": "Approach to screening mammography interpretation...", "category": "Breast Imaging"},
+        "MSK Trauma Imaging": {"content": "Systematic approach to musculoskeletal trauma...", "category": "Musculoskeletal (MSK)"},
+        "Pediatric Chest Imaging": {"content": "Special considerations for pediatric chest imaging...", "category": "Pediatric Radiology"},
+        "Nuclear Medicine Basics": {"content": "Introduction to nuclear medicine imaging...", "category": "Nuclear Medicine"}
     }
 
-    selected_lesson = st.selectbox("Choose Lesson", list(lessons.keys()))
+    # Filter lessons based on category selection
+    if category_filter != "All Categories":
+        filtered_lessons = {name: data for name, data in all_lessons.items()
+                          if data["category"] == category_filter}
+    else:
+        filtered_lessons = all_lessons
+
+    if not filtered_lessons:
+        st.warning(f"No lessons available for {category_filter}. Try selecting 'All Categories'.")
+        return
+
+    selected_lesson = st.selectbox("Choose Lesson", list(filtered_lessons.keys()))
 
     if st.button("🎧 Start Audio Lesson", type="primary"):
         st.success(f"Starting audio narration for: {selected_lesson}")
@@ -3029,7 +3191,7 @@ def render_lesson_reader():
 
     if st.button("📖 Read Text Lesson", type="secondary"):
         st.markdown(f"### {selected_lesson}")
-        st.markdown(lessons[selected_lesson])
+        st.markdown(filtered_lessons[selected_lesson]["content"])
 
 def render_differential_diagnosis():
     """Render differential diagnosis tool"""

@@ -72,6 +72,22 @@ class UserManager:
                 'created_date': datetime.now().isoformat(),
                 'last_login': None,
                 'is_active': True
+            },
+            'guest': {
+                'password_hash': self._hash_password('1234'),
+                'email': 'guest@echo-radiology.com',
+                'role': 'user',
+                'profile': {
+                    'full_name': 'Guest User',
+                    'specialty': 'General',
+                    'exam_date': None,
+                    'study_goals': ['Exploration'],
+                    'preferred_difficulty': 'Beginner',
+                    'daily_study_minutes': 30
+                },
+                'created_date': datetime.now().isoformat(),
+                'last_login': None,
+                'is_active': True
             }
         }
         self._save_users(default_users)
