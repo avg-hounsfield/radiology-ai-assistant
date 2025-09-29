@@ -41,7 +41,8 @@ class FallbackLLMManager:
 
         self.logger.info("✅ Fallback LLM manager initialized for cloud deployment")
 
-    def generate_response(self, query: str, context: str = "", max_tokens: int = 500) -> str:
+    def generate_response(self, query: str, context_chunks: List[Dict] = None,
+                         conversation_history: List[Dict] = None, max_tokens: int = 500) -> Dict:
         """Generate a basic medical response based on keywords"""
 
         query_lower = query.lower()
@@ -49,17 +50,28 @@ class FallbackLLMManager:
         # Check for specific medical conditions
         for condition, info in self.knowledge_base.items():
             if condition.replace("_", " ") in query_lower or any(sign in query_lower for sign in info["ct_signs"]):
-                return self._format_medical_response(condition, info, query)
+                content = self._format_medical_response(condition, info, query)
+                return {
+                    "content": content,
+                    "sources": [],
+                    "conversation_history": conversation_history or []
+                }
 
         # Generic medical response patterns
         if any(word in query_lower for word in ["ct", "chest", "lung", "pulmonary"]):
-            return self._generic_chest_response(query)
+            content = self._generic_chest_response(query)
         elif any(word in query_lower for word in ["brain", "head", "neurologic"]):
-            return self._generic_neuro_response(query)
+            content = self._generic_neuro_response(query)
         elif any(word in query_lower for word in ["abdomen", "abdominal", "liver", "kidney"]):
-            return self._generic_abdomen_response(query)
+            content = self._generic_abdomen_response(query)
         else:
-            return self._generic_response(query)
+            content = self._generic_response(query)
+
+        return {
+            "content": content,
+            "sources": [],
+            "conversation_history": conversation_history or []
+        }
 
     def _format_medical_response(self, condition: str, info: Dict, original_query: str) -> str:
         """Format a structured medical response"""
@@ -142,9 +154,9 @@ This is the fallback response system. The full AI capabilities are not available
             return {"content": "Please provide a question."}
 
         last_message = messages[-1].get("content", "")
-        response = self.generate_response(last_message)
+        response = self.generate_response(last_message, conversation_history=messages[:-1])
 
-        return {"content": response}
+        return response
 
     def is_available(self) -> bool:
         """Check if the LLM is available"""
