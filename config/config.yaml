@@ -1,0 +1,49 @@
+app:
+  name: "Radiology CORE Assistant"
+  version: "1.0.0"
+
+models:
+  embedding:
+    name: "all-MiniLM-L6-v2"
+    # Alternative: "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract"
+  
+  llm:
+    name: "llama3.1:8b"
+    temperature: 0.1
+    max_tokens: 1000
+    
+  multimodal:
+    name: "llava:7b"  # For image analysis
+    enabled: false
+
+processing:
+  chunk_size: 1000
+  chunk_overlap: 200
+  max_file_size_mb: 100
+  
+retrieval:
+  default_k: 5
+  similarity_threshold: 0.7
+  rerank: true
+
+storage:
+  vector_db_path: "./data/embeddings"
+  processed_docs_path: "./data/processed"
+  logs_path: "./logs"
+
+medical:
+  core_exam_areas:
+    - "Physics"
+    - "Safety" 
+    - "Informatics"
+    - "Chest"
+    - "Cardiac"
+    - "Gastrointestinal"
+    - "Genitourinary"
+    - "Ultrasound"
+    - "Mammography"
+    - "Musculoskeletal"
+    - "Neuroradiology"
+    - "Nuclear Medicine"
+    - "Pediatric"
+    - "Interventional"

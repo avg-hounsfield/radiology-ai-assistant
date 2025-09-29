@@ -1,0 +1,40 @@
+{
+  "watch_folders": [
+    {
+      "path": "./data/incoming",
+      "description": "Main incoming folder - drop new documents here",
+      "recursive": true,
+      "auto_process": true
+    },
+    {
+      "path": "./data/lecture_transcripts",
+      "description": "Folder for lecture transcript .txt files",
+      "recursive": false,
+      "auto_process": true
+    }
+  ],
+  "supported_extensions": [
+    ".pdf",
+    ".ppt",
+    ".pptx",
+    ".txt"
+  ],
+  "processing": {
+    "batch_size": 3,
+    "delay_seconds": 30,
+    "max_file_size_mb": 100,
+    "backup_processed": true,
+    "backup_folder": "./data/processed_backup"
+  },
+  "notifications": {
+    "enable_console": true,
+    "enable_file_log": true,
+    "log_file": "./logs/ingestion.log",
+    "enable_summary_report": true
+  },
+  "rag_system": {
+    "embedding_model": "radiology_optimized",
+    "llm_model": "llama3.1:8b",
+    "auto_initialize": true
+  }
+}

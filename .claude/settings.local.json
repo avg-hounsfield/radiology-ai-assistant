@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir)",
+      "Bash(python -m streamlit run:*)",
+      "Bash(python:*)",
+      "Bash(dir:*)",
+      "Bash(findstr:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(del \"C:\\Users\\Patrick\\radiology-ai-assistant\\add_guest_user.py\")",
+      "Bash(git push:*)",
+      "Bash(del \"C:\\Users\\Patrick\\radiology-ai-assistant\\test_fallback.py\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

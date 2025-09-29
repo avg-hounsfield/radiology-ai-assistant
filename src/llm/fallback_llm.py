@@ -41,27 +41,27 @@ class FallbackLLMManager:
 
         self.logger.info("✅ Fallback LLM manager initialized for cloud deployment")
 
-    def generate_response(self, prompt: str, context: str = "", max_tokens: int = 500) -> str:
+    def generate_response(self, query: str, context: str = "", max_tokens: int = 500) -> str:
         """Generate a basic medical response based on keywords"""
 
-        prompt_lower = prompt.lower()
+        query_lower = query.lower()
 
         # Check for specific medical conditions
         for condition, info in self.knowledge_base.items():
-            if condition.replace("_", " ") in prompt_lower or any(sign in prompt_lower for sign in info["ct_signs"]):
-                return self._format_medical_response(condition, info, prompt)
+            if condition.replace("_", " ") in query_lower or any(sign in query_lower for sign in info["ct_signs"]):
+                return self._format_medical_response(condition, info, query)
 
         # Generic medical response patterns
-        if any(word in prompt_lower for word in ["ct", "chest", "lung", "pulmonary"]):
-            return self._generic_chest_response(prompt)
-        elif any(word in prompt_lower for word in ["brain", "head", "neurologic"]):
-            return self._generic_neuro_response(prompt)
-        elif any(word in prompt_lower for word in ["abdomen", "abdominal", "liver", "kidney"]):
-            return self._generic_abdomen_response(prompt)
+        if any(word in query_lower for word in ["ct", "chest", "lung", "pulmonary"]):
+            return self._generic_chest_response(query)
+        elif any(word in query_lower for word in ["brain", "head", "neurologic"]):
+            return self._generic_neuro_response(query)
+        elif any(word in query_lower for word in ["abdomen", "abdominal", "liver", "kidney"]):
+            return self._generic_abdomen_response(query)
         else:
-            return self._generic_response(prompt)
+            return self._generic_response(query)
 
-    def _format_medical_response(self, condition: str, info: Dict, original_prompt: str) -> str:
+    def _format_medical_response(self, condition: str, info: Dict, original_query: str) -> str:
         """Format a structured medical response"""
         condition_name = condition.replace("_", " ").title()
 
@@ -81,7 +81,7 @@ class FallbackLLMManager:
 
         return response
 
-    def _generic_chest_response(self, prompt: str) -> str:
+    def _generic_chest_response(self, query: str) -> str:
         """Generic chest imaging response"""
         return """## Chest CT Imaging
 
@@ -94,7 +94,7 @@ Common findings to evaluate:
 
 *This is a basic reference from the fallback system. For detailed analysis, please use the full system with Ollama.*"""
 
-    def _generic_neuro_response(self, prompt: str) -> str:
+    def _generic_neuro_response(self, query: str) -> str:
         """Generic neuro imaging response"""
         return """## Neuroimaging Basics
 
@@ -107,7 +107,7 @@ Key areas to evaluate:
 
 *This is a basic reference from the fallback system. For detailed analysis, please use the full system with Ollama.*"""
 
-    def _generic_abdomen_response(self, prompt: str) -> str:
+    def _generic_abdomen_response(self, query: str) -> str:
         """Generic abdominal imaging response"""
         return """## Abdominal CT Basics
 
@@ -120,7 +120,7 @@ Systematic evaluation:
 
 *This is a basic reference from the fallback system. For detailed analysis, please use the full system with Ollama.*"""
 
-    def _generic_response(self, prompt: str) -> str:
+    def _generic_response(self, query: str) -> str:
         """Generic fallback response"""
         return """## ECHO Radiology Assistant (Cloud Mode)
 
