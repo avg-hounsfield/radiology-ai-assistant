@@ -15,6 +15,8 @@ venv.bak/
 # Data directories (contains large files and user data)
 data/
 !data/.gitkeep
+!data/flashcards/
+!data/processed_documents.json
 
 # Cache and temp files
 .cache/
