@@ -269,25 +269,45 @@ class RadiologyRAGSystem:
             }
         
         try:
-            # Step 1: Retrieve relevant chunks
+            # Step 1: Retrieve relevant chunks from documents
             search_results = embedding_system.search_similar_texts(question, n_results)
-            
-            # Step 2: Prepare context chunks
+
+            # Step 2: Search relevant flashcards
+            flashcard_results = self._search_flashcards(question, n_results=3)
+
+            # Step 3: Prepare context chunks
             context_chunks = []
-            if (search_results and 
-                search_results.get('documents') and 
+
+            # Add document results
+            if (search_results and
+                search_results.get('documents') and
                 search_results['documents'] and
                 search_results['documents'][0]):
-                
+
                 docs = search_results['documents'][0]
                 metadatas = search_results.get('metadatas', [[{}] * len(docs)])[0]
                 distances = search_results.get('distances', [[0] * len(docs)])[0]
-                
+
                 for i in range(len(docs)):
                     context_chunks.append({
                         'text': docs[i],
                         'metadata': metadatas[i] if i < len(metadatas) else {},
-                        'distance': distances[i] if i < len(distances) else 0
+                        'distance': distances[i] if i < len(distances) else 0,
+                        'source_type': 'document'
+                    })
+
+            # Add flashcard results
+            if flashcard_results:
+                for card in flashcard_results:
+                    context_chunks.append({
+                        'text': f"Q: {card['front']}\nA: {card['back']}",
+                        'metadata': {
+                            'source': f"Flashcard: {card['deck_name']}",
+                            'card_id': card['card_id'],
+                            'tags': card.get('tags', [])
+                        },
+                        'distance': 0,  # Flashcards are always relevant if found
+                        'source_type': 'flashcard'
                     })
             
             # Step 3: Generate response
@@ -308,16 +328,38 @@ class RadiologyRAGSystem:
                 conversation_history=conversation_history or []
             )
             
-            # Step 4: Add retrieval info
+            # Step 4: Add retrieval info and sources
             if 'retrieval_info' not in response:
                 response['retrieval_info'] = {}
-                
+
             response['retrieval_info'].update({
                 'chunks_retrieved': len(context_chunks),
                 'search_query': question,
                 'avg_distance': sum(chunk['distance'] for chunk in context_chunks) / len(context_chunks) if context_chunks else 0
             })
-            
+
+            # Step 5: Build sources list including flashcards
+            sources = []
+            for chunk in context_chunks:
+                if chunk.get('source_type') == 'flashcard':
+                    sources.append({
+                        'type': 'flashcard',
+                        'title': f"Flashcard: {chunk['metadata'].get('source', 'Unknown')}",
+                        'card_id': chunk['metadata'].get('card_id'),
+                        'deck_name': chunk['metadata'].get('source', '').replace('Flashcard: ', ''),
+                        'content': chunk['text'][:100] + "..." if len(chunk['text']) > 100 else chunk['text'],
+                        'tags': chunk['metadata'].get('tags', [])
+                    })
+                else:
+                    # Regular document source
+                    sources.append({
+                        'type': 'document',
+                        'filename': chunk['metadata'].get('filename', 'Document'),
+                        'section': chunk['metadata'].get('section', ''),
+                        'medical_relevance': chunk['metadata'].get('medical_relevance', 3)
+                    })
+
+            response['sources'] = sources
             return response
             
         except Exception as e:
@@ -401,3 +443,47 @@ class RadiologyRAGSystem:
                 'llm_model': self.llm_model_name
             }
         }
+
+    def _search_flashcards(self, query: str, n_results: int = 3) -> List[Dict]:
+        """Search for relevant flashcards based on query"""
+        try:
+            # Import flashcard system
+            import sys
+            import os
+            sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+            from study.flashcard_system import FlashcardManager
+            flashcard_manager = FlashcardManager()
+
+            # Simple keyword-based search in flashcard content
+            relevant_cards = []
+            query_words = query.lower().split()
+
+            for card_id, card in flashcard_manager.cards.items():
+                # Search in front, back, and tags
+                searchable_text = f"{card.front} {card.back} {' '.join(card.tags)}".lower()
+
+                # Check if any query words are in the card content
+                relevance_score = 0
+                for word in query_words:
+                    if word in searchable_text:
+                        relevance_score += 1
+
+                # Include cards with at least some relevance
+                if relevance_score > 0:
+                    relevant_cards.append({
+                        'card_id': card.card_id,
+                        'deck_name': card.deck_name,
+                        'front': card.front,
+                        'back': card.back,
+                        'tags': card.tags,
+                        'relevance_score': relevance_score
+                    })
+
+            # Sort by relevance and return top results
+            relevant_cards.sort(key=lambda x: x['relevance_score'], reverse=True)
+            return relevant_cards[:n_results]
+
+        except Exception as e:
+            self.logger.warning(f"Error searching flashcards: {e}")
+            return []

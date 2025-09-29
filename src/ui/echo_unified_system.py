@@ -32,6 +32,7 @@ from multimedia.audio_narrator import AudioNarrator
 from study.dictation_system import DictationCaseManager, DictationScorer, DictationCase, DictationAttempt
 from multimedia.image_viewer import MedicalImageViewer
 from study.flashcard_system import FlashcardManager, FlashCard, ReviewSession
+from auth.user_system import StreamlitAuth, require_authentication, get_current_user, get_user_profile, update_user_study_progress
 
 # CORE Exam Configuration
 CORE_EXAM_CONFIG = {
@@ -451,6 +452,12 @@ def render_sidebar():
                 pass
         else:
             st.error("❌ System initialization failed")
+
+        st.markdown("---")
+
+        # User Profile Section
+        from auth.user_system import auth
+        auth.show_user_menu()
 
         st.markdown("---")
 
@@ -1197,12 +1204,30 @@ def render_search_mode():
                         sources = response.get('sources', [])
                         if sources:
                             with st.expander("📚 Sources", expanded=False):
-                                for i, source in enumerate(sources[:3], 1):  # Show top 3 sources
-                                    st.markdown(f"**{i}.** {source.get('filename', 'Unknown source')}")
-                                    if source.get('section'):
-                                        st.markdown(f"   Section: {source['section']}")
-                                    if source.get('medical_relevance'):
-                                        st.markdown(f"   Relevance: {source['medical_relevance']}/5")
+                                for i, source in enumerate(sources[:5], 1):  # Show top 5 sources
+                                    if source.get('type') == 'flashcard':
+                                        # Display flashcard source with link
+                                        st.markdown(f"**{i}. 🃏 {source.get('title', 'Flashcard')}**")
+                                        st.markdown(f"   Content: {source.get('content', '')}")
+
+                                        # Tags display
+                                        tags = source.get('tags', [])
+                                        if tags:
+                                            tags_str = ', '.join(tags[:3])  # Show first 3 tags
+                                            st.markdown(f"   Tags: {tags_str}")
+
+                                        # Button to jump to flashcard mode
+                                        if st.button(f"🎯 Study this flashcard", key=f"flashcard_{i}", type="secondary"):
+                                            st.session_state.current_mode = "flashcards"
+                                            st.session_state.selected_flashcard = source.get('card_id')
+                                            st.rerun()
+                                    else:
+                                        # Regular document source
+                                        st.markdown(f"**{i}.** {source.get('filename', 'Unknown source')}")
+                                        if source.get('section'):
+                                            st.markdown(f"   Section: {source['section']}")
+                                        if source.get('medical_relevance'):
+                                            st.markdown(f"   Relevance: {source['medical_relevance']}/5")
                     else:
                         # Fallback for string responses
                         st.markdown(f"**ECHO:** {response}")
@@ -2612,6 +2637,12 @@ def main():
     """Main application function"""
     # Load theme
     load_echo_theme()
+
+    # Check authentication first
+    from auth.user_system import auth
+    if not auth.check_authentication():
+        auth.show_login_page()
+        return
 
     # Initialize session state
     initialize_session_state()
