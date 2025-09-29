@@ -1,0 +1,24 @@
+streamlit>=1.28.0
+torch>=1.13.0
+transformers>=4.21.0
+sentence-transformers>=2.2.2
+chromadb>=0.4.0
+plotly>=5.15.0
+pandas>=1.5.0
+numpy>=1.24.0
+pillow>=9.5.0
+pyttsx3>=2.90
+edge-tts>=6.1.0
+pydicom>=2.4.0
+python-dateutil>=2.8.0
+requests>=2.28.0
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+
+# Optional cloud sync dependencies
+dropbox>=11.36.0
+google-cloud-storage>=2.10.0
+boto3>=1.26.0
+
+# Optional authentication
+streamlit-authenticator>=0.2.3
