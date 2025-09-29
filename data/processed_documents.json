@@ -1,0 +1,440 @@
+{
+  "C:\\Users\\Patrick\\radiology-ai-assistant\\data\\lecture_transcripts\\01 -_ Quality Control in Nuclear Medicine.txt": {
+    "hash": "cf8c1e6718847b333f3a380f9c509e6e",
+    "processed_at": "2025-09-01T18:07:37.871850",
+    "result": {
+      "success": true,
+      "file_path": "data\\lecture_transcripts\\01 -_ Quality Control in Nuclear Medicine.txt",
+      "chunks_created": 1,
+      "processing_time": 0,
+      "transcript_count": 0
+    },
+    "file_size": 28063,
+    "filename": "01 -_ Quality Control in Nuclear Medicine.txt"
+  },
+  "data/incoming\\physics_radiation_safety.txt:1759110523.5975242": {
+    "processed_date": 1759110617.7857413,
+    "file_size": 5673,
+    "file_name": "physics_radiation_safety.txt"
+  },
+  "data/incoming\\sample_chest_radiology.txt:1759110486.8706255": {
+    "processed_date": 1759110617.785764,
+    "file_size": 3947,
+    "file_name": "sample_chest_radiology.txt"
+  },
+  "data/lecture_transcripts\\01 -_ Quality Control in Nuclear Medicine.txt:1755790175.339651": {
+    "processed_date": 1759110617.7857823,
+    "file_size": 28063,
+    "file_name": "01 -_ Quality Control in Nuclear Medicine.txt"
+  },
+  "data/lecture_transcripts\\neuro_emergency_lecture.txt:1759110568.2207417": {
+    "processed_date": 1759110617.785801,
+    "file_size": 7600,
+    "file_name": "neuro_emergency_lecture.txt"
+  },
+  "data/raw\\._A family with the branchiootorenal syndrome_clinical and genetic correlations Nephrol Dial Transplant 2002.pdf:1756710236.828821": {
+    "processed_date": 1759110617.7858207,
+    "file_size": 4096,
+    "file_name": "._A family with the branchiootorenal syndrome_clinical and genetic correlations Nephrol Dial Transplant 2002.pdf"
+  },
+  "data/raw\\._Accessory Muscles_Anatomy Symptoms and Radiologic Evaluation Radiographics 2008.pdf:1756710236.7298763": {
+    "processed_date": 1759110618.8208644,
+    "file_size": 4096,
+    "file_name": "._Accessory Muscles_Anatomy Symptoms and Radiologic Evaluation Radiographics 2008.pdf"
+  },
+  "data/raw\\._Adult Chronic Hip Pain_Radiographic Evaluation Radiographics 2000.pdf:1756710236.7298763": {
+    "processed_date": 1759110618.8208945,
+    "file_size": 4096,
+    "file_name": "._Adult Chronic Hip Pain_Radiographic Evaluation Radiographics 2000.pdf"
+  },
+  "data/raw\\._Appearance of Normal Cranial nerves on Stead state free percession MR images Radiographics 2009.pdf:1756710236.828821": {
+    "processed_date": 1759110618.8209143,
+    "file_size": 4096,
+    "file_name": "._Appearance of Normal Cranial nerves on Stead state free percession MR images Radiographics 2009.pdf"
+  },
+  "data/raw\\._Benign Musculoskeletal lipomatous lesions_From the Archives of the AFIP Radiographics 2004.pdf:1756710236.7298763": {
+    "processed_date": 1759110618.820934,
+    "file_size": 4096,
+    "file_name": "._Benign Musculoskeletal lipomatous lesions_From the Archives of the AFIP Radiographics 2004.pdf"
+  },
+  "data/raw\\._BOR Spectrum Disorders GeneReviews.pdf:1756710236.828821": {
+    "processed_date": 1759110618.8209531,
+    "file_size": 4096,
+    "file_name": "._BOR Spectrum Disorders GeneReviews.pdf"
+  },
+  "data/raw\\._Branchio-oto-renal syndrome J Nephrology 2003.pdf:1756710236.828821": {
+    "processed_date": 1759110619.869129,
+    "file_size": 4096,
+    "file_name": "._Branchio-oto-renal syndrome J Nephrology 2003.pdf"
+  },
+  "data/raw\\._Branchio-oto-renal syndrome_the mutation spectrum Human Mutation 2004.pdf:1756710236.828821": {
+    "processed_date": 1759110619.869152,
+    "file_size": 4096,
+    "file_name": "._Branchio-oto-renal syndrome_the mutation spectrum Human Mutation 2004.pdf"
+  },
+  "data/raw\\._Case 104_Calcinosis in Juvenile Dermatomyositis Radiology 2007.pdf:1756710236.7298763": {
+    "processed_date": 1759110619.8691728,
+    "file_size": 4096,
+    "file_name": "._Case 104_Calcinosis in Juvenile Dermatomyositis Radiology 2007.pdf"
+  },
+  "data/raw\\._Characterization of brain disorders and eval of therapy using fmri and mrs techniques.pdf:1756710236.828821": {
+    "processed_date": 1759110619.8691933,
+    "file_size": 4096,
+    "file_name": "._Characterization of brain disorders and eval of therapy using fmri and mrs techniques.pdf"
+  },
+  "data/raw\\._Congenital Glenoid Dysplasia Pediatric Radiology 1998.pdf:1756710236.7298763": {
+    "processed_date": 1759110619.869219,
+    "file_size": 4096,
+    "file_name": "._Congenital Glenoid Dysplasia Pediatric Radiology 1998.pdf"
+  },
+  "data/raw\\._Cortical Lesions of the Tibia_Characteristic Appearances at Conventional Radiography Radiographics 2003.pdf:1756710236.7298763": {
+    "processed_date": 1759110620.9043093,
+    "file_size": 4096,
+    "file_name": "._Cortical Lesions of the Tibia_Characteristic Appearances at Conventional Radiography Radiographics 2003.pdf"
+  },
+  "data/raw\\._Crazy Paving Pattern at Thin Section CT of the lungs_Radiologic Pathologic Overview Radiographics 2003.pdf:1756709739.7087371": {
+    "processed_date": 1759110620.904335,
+    "file_size": 4096,
+    "file_name": "._Crazy Paving Pattern at Thin Section CT of the lungs_Radiologic Pathologic Overview Radiographics 2003.pdf"
+  },
+  "data/raw\\._CT and MR Arthrography of the Normal and Pathologic Anterosuperior and Labral-Bicipital Complex Radiographics 2000.pdf:1756710236.7298763": {
+    "processed_date": 1759110620.9043572,
+    "file_size": 4096,
+    "file_name": "._CT and MR Arthrography of the Normal and Pathologic Anterosuperior and Labral-Bicipital Complex Radiographics 2000.pdf"
+  },
+  "data/raw\\._CT Appearances of Ossicular Injuries 1997 Radiographics.pdf:1756710236.828821": {
+    "processed_date": 1759110620.9043794,
+    "file_size": 4096,
+    "file_name": "._CT Appearances of Ossicular Injuries 1997 Radiographics.pdf"
+  },
+  "data/raw\\._CT Evaluation of Prosthetic Ossicular Reconstruction Procedu.pdf:1756710236.828821": {
+    "processed_date": 1759110620.904397,
+    "file_size": 4096,
+    "file_name": "._CT Evaluation of Prosthetic Ossicular Reconstruction Procedu.pdf"
+  },
+  "data/raw\\._CT of Common Congenitial Lesion sof the Temproal Bone Clinic.pdf:1756710236.828821": {
+    "processed_date": 1759110621.9298236,
+    "file_size": 4096,
+    "file_name": "._CT of Common Congenitial Lesion sof the Temproal Bone Clinic.pdf"
+  },
+  "data/raw\\._Diffusion Tensor imaging of acute mild traumatic brain injury in adolescents.pdf:1756709739.7558997": {
+    "processed_date": 1759110621.9298491,
+    "file_size": 4096,
+    "file_name": "._Diffusion Tensor imaging of acute mild traumatic brain injury in adolescents.pdf"
+  },
+  "data/raw\\._Diffusion Tensor Imaging of the Brain.pdf:1756709739.7558997": {
+    "processed_date": 1759110621.9298682,
+    "file_size": 4096,
+    "file_name": "._Diffusion Tensor Imaging of the Brain.pdf"
+  },
+  "data/raw\\._DTI and Tractography_A new Method of Describing Aberrant Fiber Connections in Developmental CNS Anomalies Radiographics 2005.pdf:1756709739.7558997": {
+    "processed_date": 1759110621.9298856,
+    "file_size": 4096,
+    "file_name": "._DTI and Tractography_A new Method of Describing Aberrant Fiber Connections in Developmental CNS Anomalies Radiographics 2005.pdf"
+  },
+  "data/raw\\._DTI of the brain 2007 neurothereautics.pdf:1756709739.7558997": {
+    "processed_date": 1759110621.929906,
+    "file_size": 4096,
+    "file_name": "._DTI of the brain 2007 neurothereautics.pdf"
+  },
+  "data/raw\\._Eosinophilic Lung Diseases_A Clinical Radiologic and Pathologic Overview Radiographics 2007.pdf:1756709739.7087371": {
+    "processed_date": 1759110622.9699485,
+    "file_size": 4096,
+    "file_name": "._Eosinophilic Lung Diseases_A Clinical Radiologic and Pathologic Overview Radiographics 2007.pdf"
+  },
+  "data/raw\\._Epicondylitis_Pathogenesis Imaging and Treatment Radiographsic 2010.pdf:1756710236.7298763": {
+    "processed_date": 1759110622.9699738,
+    "file_size": 4096,
+    "file_name": "._Epicondylitis_Pathogenesis Imaging and Treatment Radiographsic 2010.pdf"
+  },
+  "data/raw\\._Fat Containing Lesions of the chest Radiographics 2002.pdf:1756709739.7087371": {
+    "processed_date": 1759110622.9699929,
+    "file_size": 4096,
+    "file_name": "._Fat Containing Lesions of the chest Radiographics 2002.pdf"
+  },
+  "data/raw\\._First and Second Branchial Arch Syndromes_multimodality Approach.pdf:1756710236.828821": {
+    "processed_date": 1759110622.9700112,
+    "file_size": 4096,
+    "file_name": "._First and Second Branchial Arch Syndromes_multimodality Approach.pdf"
+  },
+  "data/raw\\._High Resolution CT of the lung parenchyma with pathologic correlation Radiographics 1988.pdf:1756709739.7087371": {
+    "processed_date": 1759110622.9700294,
+    "file_size": 4096,
+    "file_name": "._High Resolution CT of the lung parenchyma with pathologic correlation Radiographics 1988.pdf"
+  },
+  "data/raw\\._Imaging Features of Multicentric Castleman's disease in HIV infection Clinical Radiology 2004.pdf:1756709739.7137218": {
+    "processed_date": 1759110624.0012462,
+    "file_size": 4096,
+    "file_name": "._Imaging Features of Multicentric Castleman's disease in HIV infection Clinical Radiology 2004.pdf"
+  },
+  "data/raw\\._Imaging Findings in SLE patients Radiographics 2004.pdf:1756709739.7137218": {
+    "processed_date": 1759110624.0012672,
+    "file_size": 4096,
+    "file_name": "._Imaging Findings in SLE patients Radiographics 2004.pdf"
+  },
+  "data/raw\\._Imaging of Foot and Ankle Entrapment syndromes_From well demonstrated to unfamiliar sites Radiographics 2003.pdf:1756710236.7349224": {
+    "processed_date": 1759110624.001283,
+    "file_size": 4096,
+    "file_name": "._Imaging of Foot and Ankle Entrapment syndromes_From well demonstrated to unfamiliar sites Radiographics 2003.pdf"
+  },
+  "data/raw\\._Imaging of Intra-articular massess Radiographics 2005.pdf:1756710236.7349224": {
+    "processed_date": 1759110624.0012994,
+    "file_size": 4096,
+    "file_name": "._Imaging of Intra-articular massess Radiographics 2005.pdf"
+  },
+  "data/raw\\._Imaging of MSK Liposarcoma with Radiologic Pathologic Correlation_From the Archives of the AFIP Radiographics 2005.pdf:1756710236.7349224": {
+    "processed_date": 1759110624.0013144,
+    "file_size": 4096,
+    "file_name": "._Imaging of MSK Liposarcoma with Radiologic Pathologic Correlation_From the Archives of the AFIP Radiographics 2005.pdf"
+  },
+  "data/raw\\._Imaging of the Mastoid Middle Ear and IAC after Surgery_What.pdf:1756710236.828821": {
+    "processed_date": 1759110625.0303345,
+    "file_size": 4096,
+    "file_name": "._Imaging of the Mastoid Middle Ear and IAC after Surgery_What.pdf"
+  },
+  "data/raw\\._Imaigng of Hearing Loss Clinics North America 2006.pdf:1756710236.828821": {
+    "processed_date": 1759110625.0303533,
+    "file_size": 4096,
+    "file_name": "._Imaigng of Hearing Loss Clinics North America 2006.pdf"
+  },
+  "data/raw\\._Langerhans Cell Histiocytosis Skeletal Radiology 2007.pdf:1756710236.7349224": {
+    "processed_date": 1759110625.0303674,
+    "file_size": 4096,
+    "file_name": "._Langerhans Cell Histiocytosis Skeletal Radiology 2007.pdf"
+  },
+  "data/raw\\._Lymphangioleiomyomatosis_Pulmonary and Abdominal Findings with Pathologic Correlation Radiographics 2002.pdf:1756709739.7137218": {
+    "processed_date": 1759110625.0303833,
+    "file_size": 4096,
+    "file_name": "._Lymphangioleiomyomatosis_Pulmonary and Abdominal Findings with Pathologic Correlation Radiographics 2002.pdf"
+  },
+  "data/raw\\._Maxillary Sinus Septa_A systematic review Med Oral Patol Oral Cir Bucal 2010.pdf:1756710236.828821": {
+    "processed_date": 1759110625.0304,
+    "file_size": 4096,
+    "file_name": "._Maxillary Sinus Septa_A systematic review Med Oral Patol Oral Cir Bucal 2010.pdf"
+  },
+  "data/raw\\._Middle and Inner Ear_Improved Depiction with Multiplanar Rec.pdf:1756710236.83459": {
+    "processed_date": 1759110626.060111,
+    "file_size": 4096,
+    "file_name": "._Middle and Inner Ear_Improved Depiction with Multiplanar Rec.pdf"
+  },
+  "data/raw\\._MR Imaging of Entrapment Neuropathies of the Lower Extremity_The Knee Leg ankle and foot.pdf:1756710236.7349224": {
+    "processed_date": 1759110626.0601318,
+    "file_size": 4096,
+    "file_name": "._MR Imaging of Entrapment Neuropathies of the Lower Extremity_The Knee Leg ankle and foot.pdf"
+  },
+  "data/raw\\._MR Imaging of Entrapment Neuropathies of the lower extremity_The pelvis and hip Radiographics 2010.pdf:1756710236.7349224": {
+    "processed_date": 1759110626.0601664,
+    "file_size": 4096,
+    "file_name": "._MR Imaging of Entrapment Neuropathies of the lower extremity_The pelvis and hip Radiographics 2010.pdf"
+  },
+  "data/raw\\._MR in the diagnosis and monitoring of MS_overview.pdf:1756710236.83459": {
+    "processed_date": 1759110626.0601828,
+    "file_size": 4096,
+    "file_name": "._MR in the diagnosis and monitoring of MS_overview.pdf"
+  },
+  "data/raw\\._MRI in the Detection of Malignant Infiltration of Bone Marrow_A Commentary AJR 2006.pdf:1756710236.7349224": {
+    "processed_date": 1759110626.0601962,
+    "file_size": 4096,
+    "file_name": "._MRI in the Detection of Malignant Infiltration of Bone Marrow_A Commentary AJR 2006.pdf"
+  },
+  "data/raw\\._MRS in inflammation infection and ischemia of the brain.pdf:1756710236.83459": {
+    "processed_date": 1759110627.1108274,
+    "file_size": 4096,
+    "file_name": "._MRS in inflammation infection and ischemia of the brain.pdf"
+  },
+  "data/raw\\._MRS in pediatrics.pdf:1756710236.83459": {
+    "processed_date": 1759110627.1108592,
+    "file_size": 4096,
+    "file_name": "._MRS in pediatrics.pdf"
+  },
+  "data/raw\\._MRS of human brain tumors_a practical approach.pdf:1756710236.83459": {
+    "processed_date": 1759110627.1108742,
+    "file_size": 4096,
+    "file_name": "._MRS of human brain tumors_a practical approach.pdf"
+  },
+  "data/raw\\._MRS of the brain_review of metabolites and clinical applications.pdf:1756710236.83459": {
+    "processed_date": 1759110627.1108892,
+    "file_size": 4096,
+    "file_name": "._MRS of the brain_review of metabolites and clinical applications.pdf"
+  },
+  "data/raw\\._MSK MFH_Radiologic Pathologic Correlation_From the Archives of the AFIP Radiographics 1994.pdf:1756710236.7349224": {
+    "processed_date": 1759110627.1109052,
+    "file_size": 4096,
+    "file_name": "._MSK MFH_Radiologic Pathologic Correlation_From the Archives of the AFIP Radiographics 1994.pdf"
+  },
+  "data/raw\\._Multimodality Imaging of Peripheral Neuropathies of the Upper Limb and Brachia Plexus Radiographics 2010.pdf:1756710236.7349224": {
+    "processed_date": 1759110628.1426353,
+    "file_size": 4096,
+    "file_name": "._Multimodality Imaging of Peripheral Neuropathies of the Upper Limb and Brachia Plexus Radiographics 2010.pdf"
+  },
+  "data/raw\\._Musculoskeletal manifestations of chronic renal insufficiency Radiographics 1993.pdf:1756710236.7349224": {
+    "processed_date": 1759110628.142656,
+    "file_size": 4096,
+    "file_name": "._Musculoskeletal manifestations of chronic renal insufficiency Radiographics 1993.pdf"
+  },
+  "data/raw\\._Mycobacterium avium complex lung disease in immunocompetent patients_radiography CT correlation British Journal of Radiology 2002.pdf:1756709739.7137218": {
+    "processed_date": 1759110628.1426728,
+    "file_size": 4096,
+    "file_name": "._Mycobacterium avium complex lung disease in immunocompetent patients_radiography CT correlation British Journal of Radiology 2002.pdf"
+  },
+  "data/raw\\._Neuroimaging in Neurooncology.pdf:1756710236.83459": {
+    "processed_date": 1759110628.1426952,
+    "file_size": 4096,
+    "file_name": "._Neuroimaging in Neurooncology.pdf"
+  },
+  "data/raw\\._Novel diffusion tensor imaging methodology to detect and quantify injured regions and affected brain pathways in TBI.pdf:1756709739.7558997": {
+    "processed_date": 1759110628.1427078,
+    "file_size": 4096,
+    "file_name": "._Novel diffusion tensor imaging methodology to detect and quantify injured regions and affected brain pathways in TBI.pdf"
+  },
+  "data/raw\\._Pathologic and MR Imaging Features of Benign Fibrous Soft-Tissue Tumors in Adults Radiographics 2007.pdf:1756710236.7349224": {
+    "processed_date": 1759110629.1788144,
+    "file_size": 4096,
+    "file_name": "._Pathologic and MR Imaging Features of Benign Fibrous Soft-Tissue Tumors in Adults Radiographics 2007.pdf"
+  },
+  "data/raw\\._Pathophysiology of Otosclerosis 2001 Otology and Neurotology.pdf:1756710236.83459": {
+    "processed_date": 1759110629.1788375,
+    "file_size": 4096,
+    "file_name": "._Pathophysiology of Otosclerosis 2001 Otology and Neurotology.pdf"
+  },
+  "data/raw\\._Peipheral Neuropathies of the Median Radial and Ulnar Nervies_MR Imaging Features Radiographics 2006.pdf:1756710236.7369282": {
+    "processed_date": 1759110629.1788528,
+    "file_size": 4096,
+    "file_name": "._Peipheral Neuropathies of the Median Radial and Ulnar Nervies_MR Imaging Features Radiographics 2006.pdf"
+  },
+  "data/raw\\._Periosteal Chondroid Tumors_Radiologic Evaluation with Pathologic Correlation AJR 2001.pdf:1756710236.7369282": {
+    "processed_date": 1759110629.1788704,
+    "file_size": 4096,
+    "file_name": "._Periosteal Chondroid Tumors_Radiologic Evaluation with Pathologic Correlation AJR 2001.pdf"
+  },
+  "data/raw\\._Pulmonary Alveolar Proteinosis Radiographics 2008.pdf:1756709739.7137218": {
+    "processed_date": 1759110629.1788855,
+    "file_size": 4096,
+    "file_name": "._Pulmonary Alveolar Proteinosis Radiographics 2008.pdf"
+  },
+  "data/raw\\._Pulmonary Langerhans Cell Histiocytosis Radiographics 2004.pdf:1756709739.7137218": {
+    "processed_date": 1759110630.221846,
+    "file_size": 4096,
+    "file_name": "._Pulmonary Langerhans Cell Histiocytosis Radiographics 2004.pdf"
+  },
+  "data/raw\\._Pulmonary manifestations of multicentric Castleman's disease in HIV infection_a clinical_biological and radiological study European Respiratory Journal 2005.pdf:1756709739.7137218": {
+    "processed_date": 1759110630.221866,
+    "file_size": 4096,
+    "file_name": "._Pulmonary manifestations of multicentric Castleman's disease in HIV infection_a clinical_biological and radiological study European Respiratory Journal 2005.pdf"
+  },
+  "data/raw\\._Pulmonary Sarcoidosis_Typical and Atypical Manifestations at HRCT with Pathologic Correlation Radiographics 2010.pdf:1756709739.7137218": {
+    "processed_date": 1759110630.2218876,
+    "file_size": 4096,
+    "file_name": "._Pulmonary Sarcoidosis_Typical and Atypical Manifestations at HRCT with Pathologic Correlation Radiographics 2010.pdf"
+  },
+  "data/raw\\._PVNS and GCT of the Tendon Sheath_Radiologic and Pathologic Features AJR 1999.pdf:1756710236.7369282": {
+    "processed_date": 1759110630.221906,
+    "file_size": 4096,
+    "file_name": "._PVNS and GCT of the Tendon Sheath_Radiologic and Pathologic Features AJR 1999.pdf"
+  },
+  "data/raw\\._Quantitative CT assessment of COPD Radiographics 2010.pdf:1756709739.7137218": {
+    "processed_date": 1759110630.2219207,
+    "file_size": 4096,
+    "file_name": "._Quantitative CT assessment of COPD Radiographics 2010.pdf"
+  },
+  "data/raw\\._Quidrilateral Space Syndrome_Incidence of Imaging Findings in a Population Referred for MRI of the Shoulder AJR 2005.pdf:1756710236.7369282": {
+    "processed_date": 1759110631.2649953,
+    "file_size": 4096,
+    "file_name": "._Quidrilateral Space Syndrome_Incidence of Imaging Findings in a Population Referred for MRI of the Shoulder AJR 2005.pdf"
+  },
+  "data/raw\\._Radiologic history exhibit_Musculoskeletal eponyms_Who are these guys Radiographics 2000.pdf:1756710236.7369282": {
+    "processed_date": 1759110631.2650704,
+    "file_size": 4096,
+    "file_name": "._Radiologic history exhibit_Musculoskeletal eponyms_Who are these guys Radiographics 2000.pdf"
+  },
+  "data/raw\\._Radiology of the Hand_Review and Self Assessment AJR 2005.pdf:1756710236.7369282": {
+    "processed_date": 1759110631.2650921,
+    "file_size": 4096,
+    "file_name": "._Radiology of the Hand_Review and Self Assessment AJR 2005.pdf"
+  },
+  "data/raw\\._Refining the Region of Branchiootorenal syndrome and Defining the Flanking Markers on Chromosom 8q by genetic mapping Am J Hum Genetics 1994.pdf:1756710236.83459": {
+    "processed_date": 1759110631.265109,
+    "file_size": 4096,
+    "file_name": "._Refining the Region of Branchiootorenal syndrome and Defining the Flanking Markers on Chromosom 8q by genetic mapping Am J Hum Genetics 1994.pdf"
+  },
+  "data/raw\\._Reversed Halo Sign on HRCT of COP_Diagnostic Implications.pdf:1756709739.7137218": {
+    "processed_date": 1759110631.2651265,
+    "file_size": 4096,
+    "file_name": "._Reversed Halo Sign on HRCT of COP_Diagnostic Implications.pdf"
+  },
+  "data/raw\\._Review of High Resolution of CT of the Lung Radiographics 1992.pdf:1756709739.7137218": {
+    "processed_date": 1759110632.2875025,
+    "file_size": 4096,
+    "file_name": "._Review of High Resolution of CT of the Lung Radiographics 1992.pdf"
+  },
+  "data/raw\\._Revision Ossiculoplasty 2006 Otolaryngology Clinics North Am.pdf:1756710236.83459": {
+    "processed_date": 1759110632.2875214,
+    "file_size": 4096,
+    "file_name": "._Revision Ossiculoplasty 2006 Otolaryngology Clinics North Am.pdf"
+  },
+  "data/raw\\._Revision Ossiculoplasty 2006 Stapedectomy Clinics North Amer.pdf:1756710236.83459": {
+    "processed_date": 1759110632.2875357,
+    "file_size": 4096,
+    "file_name": "._Revision Ossiculoplasty 2006 Stapedectomy Clinics North Amer.pdf"
+  },
+  "data/raw\\._Spectrum of Pulmonary Aspergillosis_Histologic Clinical and Radiologic Findings.pdf:1756709739.7137218": {
+    "processed_date": 1759110632.287551,
+    "file_size": 4096,
+    "file_name": "._Spectrum of Pulmonary Aspergillosis_Histologic Clinical and Radiologic Findings.pdf"
+  },
+  "data/raw\\._The Many faces of Osteosarcoma_From the Archives of the AFIP Radiographics 1997.pdf:1756710236.7369282": {
+    "processed_date": 1759110632.287565,
+    "file_size": 4096,
+    "file_name": "._The Many faces of Osteosarcoma_From the Archives of the AFIP Radiographics 1997.pdf"
+  },
+  "data/raw\\._The Posterior Vertebral Scalloping Sign Radiology 2006.pdf:1756710236.7369282": {
+    "processed_date": 1759110633.3279006,
+    "file_size": 4096,
+    "file_name": "._The Posterior Vertebral Scalloping Sign Radiology 2006.pdf"
+  },
+  "data/raw\\._The rugger jersey spine sign Radiology 2004.pdf:1756710236.7369282": {
+    "processed_date": 1759110633.3279178,
+    "file_size": 4096,
+    "file_name": "._The rugger jersey spine sign Radiology 2004.pdf"
+  },
+  "data/raw\\._Thoracic Actinomycosis_CT Features with Histopathologic Correlation AJR 2006.pdf:1756709739.7137218": {
+    "processed_date": 1759110633.3279326,
+    "file_size": 4096,
+    "file_name": "._Thoracic Actinomycosis_CT Features with Histopathologic Correlation AJR 2006.pdf"
+  },
+  "data/raw\\._Thoracic Mycoses from Opportunistic Fungi_Radiologic-Pathologic correlation Radiographics.pdf:1756709739.7137218": {
+    "processed_date": 1759110633.3279483,
+    "file_size": 4096,
+    "file_name": "._Thoracic Mycoses from Opportunistic Fungi_Radiologic-Pathologic correlation Radiographics.pdf"
+  },
+  "data/raw\\._Titanium Clip Prosthesis Otology and Neurotology 2004.pdf:1756710236.8375697": {
+    "processed_date": 1759110633.3279622,
+    "file_size": 4096,
+    "file_name": "._Titanium Clip Prosthesis Otology and Neurotology 2004.pdf"
+  },
+  "data/raw\\._Tree-in-bud Pattern at Thin Section CT of the Lungs_Radiologic Pathologic Overview Radiographics 2005.pdf:1756709739.7137218": {
+    "processed_date": 1759110634.3574047,
+    "file_size": 4096,
+    "file_name": "._Tree-in-bud Pattern at Thin Section CT of the Lungs_Radiologic Pathologic Overview Radiographics 2005.pdf"
+  },
+  "data/raw\\._Understanding Diffusion MR Imaging Techniques_From Scalar to DTI and Beyond Radiographics 2006.pdf:1756709739.7558997": {
+    "processed_date": 1759110634.3574264,
+    "file_size": 4096,
+    "file_name": "._Understanding Diffusion MR Imaging Techniques_From Scalar to DTI and Beyond Radiographics 2006.pdf"
+  },
+  "data/raw\\._US Of nerve entrapments in osteofibrous tunnels of the Upper and lower limbs Radiographs 2000.pdf:1756710236.7369282": {
+    "processed_date": 1759110634.3574433,
+    "file_size": 4096,
+    "file_name": "._US Of nerve entrapments in osteofibrous tunnels of the Upper and lower limbs Radiographs 2000.pdf"
+  },
+  "data/raw\\._Viral Pneumonias in Adults_Radiologic and Pathologic Findings Radiographics 2002.pdf:1756709739.7137218": {
+    "processed_date": 1759110634.357461,
+    "file_size": 4096,
+    "file_name": "._Viral Pneumonias in Adults_Radiologic and Pathologic Findings Radiographics 2002.pdf"
+  },
+  "data/raw\\._What every Radiologist should know about Idiopathic interstitial pneumonias Radiographics 2007.pdf:1756709739.7137218": {
+    "processed_date": 1759110634.3574753,
+    "file_size": 4096,
+    "file_name": "._What every Radiologist should know about Idiopathic interstitial pneumonias Radiographics 2007.pdf"
+  }
+}
