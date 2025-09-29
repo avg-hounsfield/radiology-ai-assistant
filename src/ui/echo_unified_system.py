@@ -387,50 +387,75 @@ def initialize_session_state():
     if 'current_session_id' not in st.session_state:
         st.session_state.current_session_id = None
 
-def render_sidebar():
-    """Render the sidebar with navigation and controls"""
-    with st.sidebar:
-        st.markdown("### ECHO Navigation")
+    # Initialize new streamlined modes
+    if 'current_mode' not in st.session_state:
+        st.session_state.current_mode = "study_hub"
 
-        # Mode selection
+    if 'study_submode' not in st.session_state:
+        st.session_state.study_submode = "crack_core"
+
+    if 'reference_submode' not in st.session_state:
+        st.session_state.reference_submode = "search"
+
+def render_sidebar():
+    """Render the streamlined sidebar with two main modes"""
+    with st.sidebar:
+        st.markdown("### 🩻 ECHO Radiology")
+
+        # Primary mode selection - simplified to two main uses
+        st.markdown("#### Choose Your Mode")
         mode = st.radio(
-            "Select Mode:",
-            ["🏠 Dashboard", "🔍 Search & Chat", "📚 Study Questions", "🃏 Flashcards", "🎥 Video Library", "📊 Analytics", "🩻 Practice Dictation"],
+            "",
+            ["📚 Study Mode", "🔍 Reference Mode"],
             index=0
         )
 
         # Update current mode
-        if mode == "🏠 Dashboard":
-            st.session_state.current_mode = "dashboard"
-        elif mode == "🔍 Search & Chat":
-            st.session_state.current_mode = "search"
-        elif mode == "📚 Study Questions":
-            st.session_state.current_mode = "study"
-        elif mode == "🃏 Flashcards":
-            st.session_state.current_mode = "flashcards"
-        elif mode == "🎥 Video Library":
-            st.session_state.current_mode = "videos"
-        elif mode == "📊 Analytics":
-            st.session_state.current_mode = "analytics"
-        elif mode == "🩻 Practice Dictation":
-            st.session_state.current_mode = "dictation"
+        if mode == "📚 Study Mode":
+            st.session_state.current_mode = "study_hub"
+        elif mode == "🔍 Reference Mode":
+            st.session_state.current_mode = "reference_hub"
 
         st.markdown("---")
 
-        # Quick Actions
-        st.markdown("### Quick Actions")
+        # Mode-specific quick actions
+        if st.session_state.current_mode == "study_hub":
+            st.markdown("#### 📚 Study Options")
 
-        if st.button("🚀 Start Study Session", type="primary", use_container_width=True):
-            st.session_state.current_mode = "study"
-            st.rerun()
+            if st.button("🎯 Crack the Core", type="primary", use_container_width=True):
+                st.session_state.study_submode = "crack_core"
+                st.rerun()
 
-        if st.button("📈 View Progress", type="secondary", use_container_width=True):
-            st.session_state.current_mode = "analytics"
-            st.rerun()
+            if st.button("🃏 Flashcards", type="secondary", use_container_width=True):
+                st.session_state.study_submode = "flashcards"
+                st.rerun()
 
-        if st.button("🎯 Random Question", type="secondary", use_container_width=True):
-            st.session_state.quiz_mode = True
-            st.rerun()
+            if st.button("📖 Lessons", type="secondary", use_container_width=True):
+                st.session_state.study_submode = "lessons"
+                st.rerun()
+
+            if st.button("🎥 Video Teaching", type="secondary", use_container_width=True):
+                st.session_state.study_submode = "videos"
+                st.rerun()
+
+        elif st.session_state.current_mode == "reference_hub":
+            st.markdown("#### 🔍 Reference Tools")
+
+            if st.button("🔍 Quick Search", type="primary", use_container_width=True):
+                st.session_state.reference_submode = "search"
+                st.rerun()
+
+            if st.button("🎯 Differential Dx", type="secondary", use_container_width=True):
+                st.session_state.reference_submode = "differential"
+                st.rerun()
+
+            if st.button("📄 AJR Articles", type="secondary", use_container_width=True):
+                st.session_state.reference_submode = "articles"
+                st.rerun()
+
+            if st.button("📊 Imaging Guide", type="secondary", use_container_width=True):
+                st.session_state.reference_submode = "imaging_guide"
+                st.rerun()
 
         st.markdown("---")
 
@@ -2650,21 +2675,362 @@ def main():
     # Render sidebar
     render_sidebar()
 
-    # Main content based on mode
-    if st.session_state.current_mode == "dashboard":
-        render_dashboard()
-    elif st.session_state.current_mode == "search":
-        render_search_mode()
-    elif st.session_state.current_mode == "study":
-        render_study_mode()
-    elif st.session_state.current_mode == "flashcards":
-        render_flashcard_mode()
-    elif st.session_state.current_mode == "videos":
-        render_video_mode()
-    elif st.session_state.current_mode == "analytics":
-        render_analytics_mode()
-    elif st.session_state.current_mode == "dictation":
-        render_dictation_mode()
+    # Main content based on streamlined modes
+    if st.session_state.current_mode == "study_hub":
+        render_study_hub()
+    elif st.session_state.current_mode == "reference_hub":
+        render_reference_hub()
+
+def render_study_hub():
+    """Render the streamlined Study Hub with focused learning options"""
+    st.title("📚 Study Mode")
+    st.markdown("*Master radiology concepts through structured learning*")
+
+    # Get current submode
+    submode = st.session_state.get('study_submode', 'crack_core')
+
+    # Study mode tabs
+    tab1, tab2, tab3, tab4 = st.tabs(["🎯 Crack the Core", "🃏 Flashcards", "📖 Lessons", "🎥 Video Teaching"])
+
+    with tab1:
+        if submode == "crack_core" or st.session_state.get('show_crack_core', False):
+            render_crack_the_core()
+        else:
+            st.info("**🎯 Crack the Core Method**: Master radiology through systematic pathology review")
+            st.markdown("**Three-Step Approach for Each Pathology:**")
+            st.markdown("1. **What is it?** - Definition and pathophysiology")
+            st.markdown("2. **What is it associated with?** - Clinical presentations and risk factors")
+            st.markdown("3. **What's the next step?** - Imaging recommendations and management")
+
+            if st.button("🚀 Start Crack the Core", type="primary"):
+                st.session_state.study_submode = "crack_core"
+                st.session_state.show_crack_core = True
+                st.rerun()
+
+    with tab2:
+        if submode == "flashcards":
+            render_flashcard_mode()
+        else:
+            st.info("**🃏 Flashcard Learning**: Spaced repetition with your imported Anki decks")
+
+            try:
+                # Show flashcard stats
+                flashcard_manager = st.session_state.systems.get('flashcards')
+                if flashcard_manager:
+                    total_cards = len(flashcard_manager.cards)
+                    due_cards = len(flashcard_manager.get_due_cards())
+
+                    col1, col2, col3 = st.columns(3)
+                    with col1:
+                        st.metric("Total Cards", total_cards)
+                    with col2:
+                        st.metric("Due Today", due_cards)
+                    with col3:
+                        st.metric("Study Streak", "5 days")  # Placeholder
+
+            except:
+                pass
+
+            if st.button("🚀 Start Flashcard Review", type="primary"):
+                st.session_state.study_submode = "flashcards"
+                st.rerun()
+
+    with tab3:
+        if submode == "lessons":
+            render_lesson_reader()
+        else:
+            st.info("**📖 Lesson Reading**: Comprehensive radiology lessons with AI narration")
+            st.markdown("Choose from core radiology topics with text-to-speech support")
+
+            if st.button("🚀 Browse Lessons", type="primary"):
+                st.session_state.study_submode = "lessons"
+                st.rerun()
+
+    with tab4:
+        if submode == "videos":
+            render_video_mode()
+        else:
+            st.info("**🎥 Video Teaching**: Educational videos with enhanced metadata")
+
+            try:
+                # Show video stats
+                video_manager = st.session_state.systems.get('video')
+                if video_manager:
+                    videos = video_manager.scan_local_videos()
+                    total_videos = sum(len(v) for v in videos.values())
+                    st.metric("Available Videos", total_videos)
+            except:
+                pass
+
+            if st.button("🚀 Browse Videos", type="primary"):
+                st.session_state.study_submode = "videos"
+                st.rerun()
+
+def render_reference_hub():
+    """Render the streamlined Reference Hub for workstation use"""
+    st.title("🔍 Reference Mode")
+    st.markdown("*Quick access to radiology reference tools*")
+
+    # Get current submode
+    submode = st.session_state.get('reference_submode', 'search')
+
+    # Reference mode tabs
+    tab1, tab2, tab3, tab4 = st.tabs(["🔍 Quick Search", "🎯 Differential Dx", "📄 AJR Articles", "📊 Imaging Guide"])
+
+    with tab1:
+        if submode == "search":
+            render_search_mode()
+        else:
+            st.info("**🔍 Quick Search**: AI-powered search with radiology focus")
+            if st.button("🚀 Open Search", type="primary"):
+                st.session_state.reference_submode = "search"
+                st.rerun()
+
+    with tab2:
+        if submode == "differential":
+            render_differential_diagnosis()
+        else:
+            st.info("**🎯 Differential Diagnosis**: Find differentials based on imaging findings")
+            if st.button("🚀 Open Differential Tool", type="primary"):
+                st.session_state.reference_submode = "differential"
+                st.rerun()
+
+    with tab3:
+        if submode == "articles":
+            render_ajr_articles()
+        else:
+            st.info("**📄 AJR Articles**: Search American Journal of Radiology publications")
+            if st.button("🚀 Search AJR", type="primary"):
+                st.session_state.reference_submode = "articles"
+                st.rerun()
+
+    with tab4:
+        if submode == "imaging_guide":
+            render_imaging_guide()
+        else:
+            st.info("**📊 Imaging Guide**: Best imaging modalities and protocols")
+            if st.button("🚀 Open Imaging Guide", type="primary"):
+                st.session_state.reference_submode = "imaging_guide"
+                st.rerun()
+
+def render_crack_the_core():
+    """Render the Crack the Core learning method"""
+    st.subheader("🎯 Crack the Core")
+    st.markdown("*Master radiology through systematic pathology review*")
+
+    # Core exam areas
+    areas = list(CORE_EXAM_CONFIG['exam_areas'].keys())
+    selected_area = st.selectbox("Choose Radiology Area", areas)
+
+    # Common pathologies for each area (simplified list)
+    pathologies = {
+        'Cardiothoracic': [
+            'Pneumonia', 'Pulmonary Edema', 'Pneumothorax', 'Pleural Effusion',
+            'Lung Cancer', 'COPD/Emphysema', 'Pulmonary Embolism'
+        ],
+        'Neuroradiology': [
+            'Stroke (Acute)', 'Intracranial Hemorrhage', 'Brain Tumor', 'Multiple Sclerosis',
+            'Hydrocephalus', 'Traumatic Brain Injury'
+        ],
+        'Abdominal & Pelvic': [
+            'Appendicitis', 'Bowel Obstruction', 'Pancreatitis', 'Cholecystitis',
+            'Liver Cirrhosis', 'Renal Stones', 'Ovarian Cyst'
+        ],
+        'Musculoskeletal (MSK)': [
+            'Fractures', 'Arthritis', 'Osteomyelitis', 'Bone Tumors',
+            'Soft Tissue Masses', 'Joint Effusion'
+        ],
+        'Breast Imaging': [
+            'Breast Cancer', 'Fibroadenoma', 'Cysts', 'Calcifications',
+            'Fat Necrosis', 'Invasive Ductal Carcinoma'
+        ],
+        'Physics & Safety': [
+            'Radiation Dose', 'Contrast Reactions', 'MRI Safety',
+            'CT Protocols', 'Radiation Protection'
+        ],
+        'Pediatric Radiology': [
+            'Intussusception', 'Pyloric Stenosis', 'Non-accidental Trauma',
+            'Congenital Heart Disease', 'Developmental Dysplasia'
+        ],
+        'Nuclear Medicine': [
+            'Bone Scan', 'Thyroid Scan', 'PET/CT', 'HIDA Scan',
+            'V/Q Scan', 'Renal Scan'
+        ]
+    }
+
+    selected_pathology = st.selectbox("Select Pathology", pathologies.get(selected_area, []))
+
+    if st.button("🎯 Study This Pathology", type="primary"):
+        render_pathology_breakdown(selected_area, selected_pathology)
+
+def render_pathology_breakdown(area, pathology):
+    """Render the three-step pathology breakdown"""
+    st.markdown("---")
+    st.markdown(f"### 🎯 {pathology} ({area})")
+
+    # Three-column layout for the three questions
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.markdown("#### 1️⃣ What is it?")
+        with st.expander("Definition & Pathophysiology", expanded=True):
+            if st.session_state.systems and st.session_state.systems['rag']:
+                with st.spinner("Loading definition..."):
+                    response = st.session_state.systems['rag'].query(
+                        f"What is {pathology}? Provide definition and pathophysiology for radiology review.",
+                        n_results=3
+                    )
+                    if isinstance(response, dict):
+                        st.markdown(response.get('answer', 'Information not available'))
+                    else:
+                        st.markdown(response)
+
+    with col2:
+        st.markdown("#### 2️⃣ Associated with?")
+        with st.expander("Clinical & Risk Factors", expanded=True):
+            if st.session_state.systems and st.session_state.systems['rag']:
+                with st.spinner("Loading associations..."):
+                    response = st.session_state.systems['rag'].query(
+                        f"What is {pathology} associated with? Clinical presentations, risk factors, and imaging findings.",
+                        n_results=3
+                    )
+                    if isinstance(response, dict):
+                        st.markdown(response.get('answer', 'Information not available'))
+                    else:
+                        st.markdown(response)
+
+    with col3:
+        st.markdown("#### 3️⃣ Next step?")
+        with st.expander("Imaging & Management", expanded=True):
+            if st.session_state.systems and st.session_state.systems['rag']:
+                with st.spinner("Loading next steps..."):
+                    response = st.session_state.systems['rag'].query(
+                        f"What is the next step for {pathology}? Best imaging modalities and management approach.",
+                        n_results=3
+                    )
+                    if isinstance(response, dict):
+                        st.markdown(response.get('answer', 'Information not available'))
+                    else:
+                        st.markdown(response)
+
+    # Action buttons
+    st.markdown("---")
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        if st.button("📚 Find Related Flashcards", type="secondary"):
+            st.session_state.study_submode = "flashcards"
+            st.session_state.flashcard_search = pathology
+            st.rerun()
+
+    with col2:
+        if st.button("🎥 Watch Videos", type="secondary"):
+            st.session_state.study_submode = "videos"
+            st.session_state.video_search = pathology
+            st.rerun()
+
+    with col3:
+        if st.button("🔍 Deep Reference Search", type="secondary"):
+            st.session_state.current_mode = "reference_hub"
+            st.session_state.reference_submode = "search"
+            st.session_state.reference_query = pathology
+            st.rerun()
+
+def render_lesson_reader():
+    """Render lesson reading interface with AI narration"""
+    st.subheader("📖 Radiology Lessons")
+    st.info("**Lesson Reading**: Comprehensive text lessons with optional AI narration")
+
+    # Sample lessons (in practice, these would be loaded from files)
+    lessons = {
+        "Chest X-Ray Interpretation": "A systematic approach to reading chest radiographs...",
+        "CT Abdomen Protocols": "Understanding optimal CT protocols for abdominal imaging...",
+        "MRI Brain Basics": "Fundamentals of brain MRI interpretation...",
+        "Mammography Screening": "Approach to screening mammography interpretation..."
+    }
+
+    selected_lesson = st.selectbox("Choose Lesson", list(lessons.keys()))
+
+    if st.button("🎧 Start Audio Lesson", type="primary"):
+        st.success(f"Starting audio narration for: {selected_lesson}")
+        # Audio narration would be implemented here
+
+    if st.button("📖 Read Text Lesson", type="secondary"):
+        st.markdown(f"### {selected_lesson}")
+        st.markdown(lessons[selected_lesson])
+
+def render_differential_diagnosis():
+    """Render differential diagnosis tool"""
+    st.subheader("🎯 Differential Diagnosis Finder")
+    st.info("**Find differentials based on imaging findings and clinical presentation**")
+
+    # Input fields
+    finding = st.text_input("Primary Imaging Finding", placeholder="e.g., pulmonary nodule, brain lesion")
+    location = st.selectbox("Anatomic Location",
+        ["Chest/Thorax", "Brain/Head", "Abdomen", "Pelvis", "MSK", "Breast"])
+
+    patient_age = st.selectbox("Patient Age Group", ["Pediatric", "Young Adult", "Middle Age", "Elderly"])
+
+    if st.button("🔍 Generate Differentials", type="primary") and finding:
+        if st.session_state.systems and st.session_state.systems['rag']:
+            with st.spinner("Generating differential diagnosis..."):
+                query = f"Differential diagnosis for {finding} in {location} in {patient_age} patient. Include imaging features and next steps."
+                response = st.session_state.systems['rag'].query(query, n_results=5)
+
+                if isinstance(response, dict):
+                    st.markdown("### 🎯 Differential Considerations")
+                    st.markdown(response.get('answer', 'No differentials found'))
+
+                    # Show sources including flashcards
+                    sources = response.get('sources', [])
+                    if sources:
+                        with st.expander("📚 Reference Sources", expanded=False):
+                            for i, source in enumerate(sources, 1):
+                                if source.get('type') == 'flashcard':
+                                    st.markdown(f"**{i}. 🃏 {source.get('title', 'Flashcard')}**")
+                                    if st.button(f"Study Card", key=f"diff_card_{i}", type="secondary"):
+                                        st.session_state.current_mode = "study_hub"
+                                        st.session_state.study_submode = "flashcards"
+                                        st.session_state.selected_flashcard = source.get('card_id')
+                                        st.rerun()
+
+def render_ajr_articles():
+    """Render AJR article search"""
+    st.subheader("📄 AJR Article Search")
+    st.info("**Search American Journal of Radiology publications**")
+
+    search_query = st.text_input("Search AJR Articles", placeholder="e.g., breast cancer screening")
+
+    if st.button("🔍 Search AJR", type="primary") and search_query:
+        st.info("🔍 Searching AJR database...")
+        # In practice, this would integrate with AJR API or database
+        st.markdown("### Sample Results:")
+        st.markdown("- **Breast Cancer Screening Guidelines** - AJR 2023")
+        st.markdown("- **AI in Mammography** - AJR 2022")
+        st.markdown("- **BI-RADS Updates** - AJR 2021")
+
+def render_imaging_guide():
+    """Render imaging modality and protocol guide"""
+    st.subheader("📊 Imaging Guide")
+    st.info("**Best imaging modalities and protocols for clinical scenarios**")
+
+    clinical_scenario = st.selectbox("Clinical Scenario", [
+        "Acute Abdominal Pain",
+        "Headache with Neurologic Signs",
+        "Chest Pain",
+        "Back Pain",
+        "Suspected Cancer Screening",
+        "Trauma Evaluation"
+    ])
+
+    if st.button("📊 Get Imaging Recommendations", type="primary"):
+        if st.session_state.systems and st.session_state.systems['rag']:
+            with st.spinner("Getting imaging recommendations..."):
+                query = f"Best imaging modality and protocol for {clinical_scenario}. Include first-line, alternative options, and contraindications."
+                response = st.session_state.systems['rag'].query(query, n_results=3)
+
+                if isinstance(response, dict):
+                    st.markdown("### 📊 Imaging Recommendations")
+                    st.markdown(response.get('answer', 'No recommendations found'))
 
 if __name__ == "__main__":
     main()
