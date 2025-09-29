@@ -1,33 +1,32 @@
-streamlit>=1.28.0
-torch>=1.13.0
-transformers>=4.21.0
-sentence-transformers>=2.2.2
-chromadb>=0.4.0
-plotly>=5.15.0
-pandas>=1.5.0
-numpy>=1.24.0
-pillow>=9.5.0
-pyttsx3>=2.90
-edge-tts>=6.1.0
-pydicom>=2.4.0
+streamlit>=1.25.0
+torch>=1.11.0
+transformers>=4.18.0
+sentence-transformers>=2.2.0
+chromadb>=0.3.0
+plotly>=5.10.0
+pandas>=1.3.0
+numpy>=1.21.0
+pillow>=8.3.0
+# pyttsx3>=2.90  # Text-to-speech - may not work on Streamlit Cloud
+pydicom>=2.3.0
 python-dateutil>=2.8.0
-requests>=2.28.0
-beautifulsoup4>=4.12.0
-lxml>=4.9.0
+requests>=2.25.0
+beautifulsoup4>=4.10.0
+lxml>=4.6.0
 
-# Optional cloud sync dependencies
-dropbox>=11.36.0
-google-cloud-storage>=2.10.0
-boto3>=1.26.0
+# Optional cloud sync dependencies (commented out for Streamlit Cloud)
+# dropbox>=11.36.0
+# google-cloud-storage>=2.10.0
+# boto3>=1.26.0
 
 # Optional authentication
-streamlit-authenticator>=0.2.3
+# streamlit-authenticator>=0.2.3
 
 # Image processing and computer vision
-opencv-python>=4.8.0
-Pillow>=9.5.0
-PyMuPDF>=1.23.0
-python-pptx>=0.6.21
+# opencv-python>=4.8.0  # Not available on Streamlit Cloud
+Pillow>=8.3.0
+PyMuPDF>=1.20.0
+python-pptx>=0.6.18
 
 # Optional visual embeddings (CLIP)
 # torch>=1.13.0  # Already included above

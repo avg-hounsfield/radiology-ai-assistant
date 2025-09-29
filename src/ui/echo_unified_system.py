@@ -31,7 +31,14 @@ from multimedia.video_manager import VideoManager
 from multimedia.audio_narrator import AudioNarrator
 from study.dictation_system import DictationCaseManager, DictationScorer, DictationCase, DictationAttempt
 from multimedia.image_viewer import MedicalImageViewer
-from multimedia.image_processor import RadiologyImageManager, RadiologyImage
+# Optional import - may not work on Streamlit Cloud
+try:
+    from multimedia.image_processor import RadiologyImageManager, RadiologyImage
+    IMAGE_PROCESSOR_AVAILABLE = True
+except ImportError:
+    IMAGE_PROCESSOR_AVAILABLE = False
+    RadiologyImageManager = None
+    RadiologyImage = None
 from study.flashcard_system import FlashcardManager, FlashCard, ReviewSession
 from auth.user_system import StreamlitAuth, require_authentication, get_current_user, get_user_profile, update_user_study_progress
 
@@ -224,10 +231,13 @@ def load_echo_theme():
         border-radius: 8px !important;
         font-weight: 500 !important;
         font-family: 'Inter', sans-serif !important;
-        height: 68px !important;
-        padding: 0.75rem 1.5rem !important;
+        min-height: 48px !important;
+        padding: 1rem 2rem !important;
         box-shadow: 0 4px 14px rgba(0, 191, 255, 0.2) !important;
         transition: all 0.3s ease !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
     }
 
     .stButton > button:hover {
@@ -464,9 +474,10 @@ def render_sidebar():
         # Primary mode selection - simplified to two main uses
         st.markdown("#### Choose Your Mode")
         mode = st.radio(
-            "",
+            "Choose Your Mode",
             ["📚 Study Mode", "🔍 Reference Mode"],
-            index=0
+            index=0,
+            label_visibility="collapsed"
         )
 
         # Update current mode
@@ -3297,7 +3308,10 @@ def render_image_upload_interface():
             status_text = st.empty()
 
             try:
-                # Initialize image manager
+                # Initialize image manager (if available)
+                if not IMAGE_PROCESSOR_AVAILABLE:
+                    st.error("🚫 Image processing not available on this deployment")
+                    return
                 image_manager = RadiologyImageManager()
                 processed_count = 0
 
@@ -3403,7 +3417,10 @@ def render_directory_scan_interface():
             results_container = st.empty()
 
             try:
-                # Initialize image manager
+                # Initialize image manager (if available)
+                if not IMAGE_PROCESSOR_AVAILABLE:
+                    st.error("🚫 Image processing not available on this deployment")
+                    return
                 image_manager = RadiologyImageManager()
 
                 # Get all files to process
