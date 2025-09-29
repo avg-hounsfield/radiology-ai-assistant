@@ -99,13 +99,29 @@ class RadiologyRAGSystem:
             return self.llm_manager
             
         except ImportError as e:
-            self.logger.warning(f"⚠️ Could not import LocalLLMManager: {e}")
-            self.llm_manager = "unavailable"
-            return None
+            self.logger.warning(f"⚠️ Could not import MedicalLLMManager: {e}")
+            # Try fallback LLM
+            try:
+                from llm.fallback_llm import FallbackLLMManager
+                self.llm_manager = FallbackLLMManager()
+                self.logger.info("✅ Using fallback LLM for cloud deployment")
+                return self.llm_manager
+            except Exception as fallback_error:
+                self.logger.error(f"❌ Fallback LLM also failed: {fallback_error}")
+                self.llm_manager = "unavailable"
+                return None
         except Exception as e:
             self.logger.error(f"❌ LLM manager initialization failed: {e}")
-            self.llm_manager = "failed"
-            return None
+            # Try fallback LLM
+            try:
+                from llm.fallback_llm import FallbackLLMManager
+                self.llm_manager = FallbackLLMManager()
+                self.logger.info("✅ Using fallback LLM due to main LLM failure")
+                return self.llm_manager
+            except Exception as fallback_error:
+                self.logger.error(f"❌ Fallback LLM also failed: {fallback_error}")
+                self.llm_manager = "failed"
+                return None
     
     def process_documents(self, document_paths: List[str]) -> Dict:
         """Process and index all documents"""
