@@ -31,6 +31,7 @@ from multimedia.video_manager import VideoManager
 from multimedia.audio_narrator import AudioNarrator
 from study.dictation_system import DictationCaseManager, DictationScorer, DictationCase, DictationAttempt
 from multimedia.image_viewer import MedicalImageViewer
+from multimedia.image_processor import RadiologyImageManager, RadiologyImage
 from study.flashcard_system import FlashcardManager, FlashCard, ReviewSession
 from auth.user_system import StreamlitAuth, require_authentication, get_current_user, get_user_profile, update_user_study_progress
 
@@ -455,6 +456,24 @@ def render_sidebar():
 
             if st.button("📊 Imaging Guide", type="secondary", use_container_width=True):
                 st.session_state.reference_submode = "imaging_guide"
+                st.rerun()
+
+        # Admin-only functions
+        user_role = st.session_state.get('user_profile', {}).get('role', 'user')
+        if user_role == 'admin':
+            st.markdown("---")
+            st.markdown("#### 🔧 Admin Functions")
+
+            if st.button("📤 Upload Images", type="secondary", use_container_width=True):
+                st.session_state.show_image_upload = True
+                st.rerun()
+
+            if st.button("🔄 Scan Directories", type="secondary", use_container_width=True):
+                st.session_state.show_directory_scan = True
+                st.rerun()
+
+            if st.button("📚 Upload Documents", type="secondary", use_container_width=True):
+                st.session_state.show_document_upload = True
                 st.rerun()
 
         st.markdown("---")
@@ -1246,6 +1265,33 @@ def render_search_mode():
                                             st.session_state.current_mode = "flashcards"
                                             st.session_state.selected_flashcard = source.get('card_id')
                                             st.rerun()
+                                    elif source.get('type') == 'image':
+                                        # Display image source with thumbnail
+                                        st.markdown(f"**{i}. 🖼️ {source.get('title', 'Medical Image')}**")
+
+                                        # Display image thumbnail if file exists
+                                        image_path = source.get('file_path', '')
+                                        if image_path and os.path.exists(image_path):
+                                            try:
+                                                col1, col2 = st.columns([1, 3])
+                                                with col1:
+                                                    st.image(image_path, width=100)
+                                                with col2:
+                                                    st.markdown(f"   Modality: **{source.get('modality', 'Unknown')}**")
+                                                    st.markdown(f"   Body Part: **{source.get('body_part', 'Unknown')}**")
+
+                                                    # Tags display
+                                                    tags = source.get('tags', [])
+                                                    if tags:
+                                                        tags_str = ', '.join(tags[:3])  # Show first 3 tags
+                                                        st.markdown(f"   Tags: {tags_str}")
+                                            except Exception as e:
+                                                st.markdown(f"   Image: {os.path.basename(image_path)} (preview unavailable)")
+                                                st.markdown(f"   Modality: **{source.get('modality', 'Unknown')}**")
+                                                st.markdown(f"   Body Part: **{source.get('body_part', 'Unknown')}**")
+                                        else:
+                                            st.markdown(f"   Image: {source.get('file_path', 'Unknown')}")
+                                            st.markdown(f"   Modality: **{source.get('modality', 'Unknown')}**")
                                     else:
                                         # Regular document source
                                         st.markdown(f"**{i}.** {source.get('filename', 'Unknown source')}")
@@ -2669,6 +2715,26 @@ def main():
         auth.show_login_page()
         return
 
+    # Add CSS to hide Streamlit UI elements after login
+    st.markdown("""
+    <style>
+    /* Hide Streamlit header and menu after login */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    .stDeployButton {display: none;}
+
+    /* Add smooth transition */
+    .main .block-container {
+        animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
     # Initialize session state
     initialize_session_state()
 
@@ -2680,6 +2746,13 @@ def main():
         render_study_hub()
     elif st.session_state.current_mode == "reference_hub":
         render_reference_hub()
+
+    # Handle image management overlays
+    if st.session_state.get('show_image_upload', False):
+        render_image_upload_interface()
+
+    if st.session_state.get('show_directory_scan', False):
+        render_directory_scan_interface()
 
 def render_study_hub():
     """Render the streamlined Study Hub with focused learning options"""
@@ -3031,6 +3104,221 @@ def render_imaging_guide():
                 if isinstance(response, dict):
                     st.markdown("### 📊 Imaging Recommendations")
                     st.markdown(response.get('answer', 'No recommendations found'))
+
+def render_image_upload_interface():
+    """Render the image upload and tagging interface"""
+    with st.container():
+        st.markdown("## 🖼️ Image Upload & Tagging")
+
+        # Close button
+        col1, col2 = st.columns([6, 1])
+        with col2:
+            if st.button("✖️ Close", type="secondary"):
+                st.session_state.show_image_upload = False
+                st.rerun()
+
+        with col1:
+            st.markdown("Upload radiology images and add metadata tags for enhanced search")
+
+        # File uploader
+        uploaded_files = st.file_uploader(
+            "Choose image files",
+            type=['png', 'jpg', 'jpeg', 'bmp', 'tiff'],
+            accept_multiple_files=True
+        )
+
+        if uploaded_files:
+            st.markdown(f"### 📁 Processing {len(uploaded_files)} image(s)")
+
+            # Progress bar
+            progress_bar = st.progress(0)
+            status_text = st.empty()
+
+            try:
+                # Initialize image manager
+                image_manager = RadiologyImageManager()
+                processed_count = 0
+
+                for i, uploaded_file in enumerate(uploaded_files):
+                    status_text.text(f"Processing {uploaded_file.name}...")
+
+                    # Save uploaded file temporarily
+                    temp_path = f"temp_{uploaded_file.name}"
+                    with open(temp_path, "wb") as f:
+                        f.write(uploaded_file.getbuffer())
+
+                    try:
+                        # Process the image
+                        image = image_manager.process_image(temp_path)
+
+                        # Display image preview and metadata form
+                        col1, col2 = st.columns([2, 3])
+
+                        with col1:
+                            st.image(temp_path, caption=uploaded_file.name, width=200)
+
+                        with col2:
+                            st.markdown(f"**{uploaded_file.name}**")
+                            st.markdown(f"Detected Modality: **{image.modality}**")
+                            st.markdown(f"Detected Body Part: **{image.body_part}**")
+
+                            # Allow user to modify tags
+                            custom_tags = st.text_input(
+                                "Custom Tags (comma-separated)",
+                                value=", ".join(image.tags),
+                                key=f"tags_{i}"
+                            )
+
+                            # Update tags if modified
+                            if custom_tags:
+                                new_tags = [tag.strip() for tag in custom_tags.split(",") if tag.strip()]
+                                image.tags = new_tags
+
+                            # Save to database
+                            image_manager.add_to_database(image)
+                            processed_count += 1
+
+                        # Clean up temp file
+                        os.unlink(temp_path)
+
+                    except Exception as e:
+                        st.error(f"Error processing {uploaded_file.name}: {str(e)}")
+                        if os.path.exists(temp_path):
+                            os.unlink(temp_path)
+
+                    # Update progress
+                    progress_bar.progress((i + 1) / len(uploaded_files))
+
+                status_text.text(f"✅ Successfully processed {processed_count}/{len(uploaded_files)} images")
+                st.success(f"🎉 Images added to database! You can now search for them using the RAG system.")
+
+            except Exception as e:
+                st.error(f"Error initializing image manager: {str(e)}")
+
+def render_directory_scan_interface():
+    """Render the directory scanning interface"""
+    with st.container():
+        st.markdown("## 🔄 Directory Scanner")
+
+        # Close button
+        col1, col2 = st.columns([6, 1])
+        with col2:
+            if st.button("✖️ Close", type="secondary", key="close_scan"):
+                st.session_state.show_directory_scan = False
+                st.rerun()
+
+        with col1:
+            st.markdown("Scan directories for radiology images and documents")
+
+        # Directory input
+        default_dir = r"X:\Subfolders\Rads HDD"
+        scan_directory = st.text_input(
+            "Directory to scan",
+            value=default_dir,
+            help="Enter the full path to scan for images, PDFs, and PowerPoint files"
+        )
+
+        # Scan options
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            scan_images = st.checkbox("📷 Scan Images", value=True)
+        with col2:
+            scan_pdfs = st.checkbox("📄 Scan PDFs", value=True)
+        with col3:
+            scan_ppts = st.checkbox("📊 Scan PowerPoints", value=True)
+
+        # Start scanning button
+        if st.button("🚀 Start Directory Scan", type="primary"):
+            if not os.path.exists(scan_directory):
+                st.error(f"Directory not found: {scan_directory}")
+                return
+
+            st.markdown("### 🔄 Scanning in progress...")
+
+            # Progress tracking
+            progress_bar = st.progress(0)
+            status_text = st.empty()
+            results_container = st.empty()
+
+            try:
+                # Initialize image manager
+                image_manager = RadiologyImageManager()
+
+                # Get all files to process
+                all_files = []
+                if scan_images:
+                    image_extensions = ['*.png', '*.jpg', '*.jpeg', '*.bmp', '*.tiff', '*.gif']
+                    for ext in image_extensions:
+                        all_files.extend(Path(scan_directory).rglob(ext))
+
+                if scan_pdfs:
+                    all_files.extend(Path(scan_directory).rglob('*.pdf'))
+
+                if scan_ppts:
+                    all_files.extend(Path(scan_directory).rglob('*.ppt*'))
+
+                total_files = len(all_files)
+                if total_files == 0:
+                    st.warning("No files found to process")
+                    return
+
+                status_text.text(f"Found {total_files} files to process...")
+
+                # Process files
+                processed_count = 0
+                error_count = 0
+                results = []
+
+                for i, file_path in enumerate(all_files):
+                    status_text.text(f"Processing {file_path.name} ({i+1}/{total_files})")
+
+                    try:
+                        if file_path.suffix.lower() in ['.png', '.jpg', '.jpeg', '.bmp', '.tiff', '.gif']:
+                            # Process image
+                            image = image_manager.process_image(str(file_path))
+                            image_manager.add_to_database(image)
+                            results.append(f"✅ Image: {file_path.name} ({image.modality}, {image.body_part})")
+                            processed_count += 1
+
+                        elif file_path.suffix.lower() == '.pdf':
+                            # Extract images from PDF
+                            extracted_images = image_manager.extract_images_from_document(str(file_path))
+                            for img in extracted_images:
+                                image_manager.add_to_database(img)
+                            results.append(f"📄 PDF: {file_path.name} - extracted {len(extracted_images)} images")
+                            processed_count += len(extracted_images)
+
+                        elif file_path.suffix.lower() in ['.ppt', '.pptx']:
+                            # Extract images from PowerPoint
+                            extracted_images = image_manager.extract_images_from_document(str(file_path))
+                            for img in extracted_images:
+                                image_manager.add_to_database(img)
+                            results.append(f"📊 PPT: {file_path.name} - extracted {len(extracted_images)} images")
+                            processed_count += len(extracted_images)
+
+                    except Exception as e:
+                        error_count += 1
+                        results.append(f"❌ Error: {file_path.name} - {str(e)[:50]}...")
+
+                    # Update progress
+                    progress_bar.progress((i + 1) / total_files)
+
+                # Show results
+                status_text.text(f"✅ Scan complete! Processed {processed_count} images, {error_count} errors")
+
+                with results_container.container():
+                    st.markdown("### 📊 Scan Results")
+                    st.markdown(f"**Summary:** {processed_count} images processed, {error_count} errors")
+
+                    if results:
+                        with st.expander("Detailed Results", expanded=False):
+                            for result in results[-20:]:  # Show last 20 results
+                                st.text(result)
+
+                    st.success("🎉 Directory scan completed! Images have been added to the database.")
+
+            except Exception as e:
+                st.error(f"Error during directory scan: {str(e)}")
 
 if __name__ == "__main__":
     main()

@@ -37,7 +37,7 @@ class UserManager:
         return self._create_default_users()
 
     def _create_default_users(self) -> Dict:
-        """Create default admin user"""
+        """Create default admin user and regular users"""
         admin_password = os.getenv('ADMIN_PASSWORD', 'echo2024')
 
         default_users = {
@@ -52,6 +52,22 @@ class UserManager:
                     'study_goals': ['Board Preparation'],
                     'preferred_difficulty': 'Intermediate',
                     'daily_study_minutes': 60
+                },
+                'created_date': datetime.now().isoformat(),
+                'last_login': None,
+                'is_active': True
+            },
+            'matulich': {
+                'password_hash': self._hash_password('echo2024'),
+                'email': 'matulich@echo-radiology.com',
+                'role': 'user',
+                'profile': {
+                    'full_name': 'Dr. Matulich',
+                    'specialty': 'Radiology',
+                    'exam_date': None,
+                    'study_goals': ['Board Preparation', 'Clinical Practice'],
+                    'preferred_difficulty': 'Advanced',
+                    'daily_study_minutes': 90
                 },
                 'created_date': datetime.now().isoformat(),
                 'last_login': None,
@@ -160,6 +176,46 @@ class StreamlitAuth:
 
     def show_login_page(self):
         """Display login/registration page"""
+        # Add CSS to hide login elements after authentication
+        st.markdown("""
+        <style>
+        /* Hide Streamlit elements after login */
+        .login-hidden {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
+
+        /* Smooth fade out animation */
+        .login-fadeout {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                visibility: visible;
+            }
+            to {
+                opacity: 0;
+                visibility: hidden;
+                display: none;
+            }
+        }
+
+        /* Hide the main menu and footer when authenticated */
+        .authenticated-hide #MainMenu {
+            visibility: hidden;
+        }
+        .authenticated-hide footer {
+            visibility: hidden;
+        }
+        .authenticated-hide .stDeployButton {
+            display: none;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
         st.markdown("# 🩻 ECHO Radiology System")
         st.markdown("### Comprehensive Board Preparation Platform")
 

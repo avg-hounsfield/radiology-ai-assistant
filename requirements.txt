@@ -22,3 +22,13 @@ boto3>=1.26.0
 
 # Optional authentication
 streamlit-authenticator>=0.2.3
+
+# Image processing and computer vision
+opencv-python>=4.8.0
+Pillow>=9.5.0
+PyMuPDF>=1.23.0
+python-pptx>=0.6.21
+
+# Optional visual embeddings (CLIP)
+# torch>=1.13.0  # Already included above
+# transformers>=4.21.0  # Already included above

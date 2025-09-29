@@ -275,7 +275,10 @@ class RadiologyRAGSystem:
             # Step 2: Search relevant flashcards
             flashcard_results = self._search_flashcards(question, n_results=3)
 
-            # Step 3: Prepare context chunks
+            # Step 3: Search relevant images
+            image_results = self._search_images(question, n_results=2)
+
+            # Step 4: Prepare context chunks
             context_chunks = []
 
             # Add document results
@@ -309,6 +312,26 @@ class RadiologyRAGSystem:
                         'distance': 0,  # Flashcards are always relevant if found
                         'source_type': 'flashcard'
                     })
+
+            # Add image results
+            if image_results:
+                for image in image_results:
+                    image_description = f"Medical Image: {image.get('modality', 'Unknown')} of {image.get('body_part', 'Unknown')}"
+                    if image.get('extracted_text'):
+                        image_description += f"\nContext: {image['extracted_text']}"
+
+                    context_chunks.append({
+                        'text': image_description,
+                        'metadata': {
+                            'source': f"Image: {image.get('file_path', '')}",
+                            'image_id': image.get('image_id'),
+                            'modality': image.get('modality', ''),
+                            'body_part': image.get('body_part', ''),
+                            'tags': image.get('tags', [])
+                        },
+                        'distance': 0,  # Images are always relevant if found
+                        'source_type': 'image'
+                    })
             
             # Step 3: Generate response
             if not context_chunks:
@@ -338,7 +361,7 @@ class RadiologyRAGSystem:
                 'avg_distance': sum(chunk['distance'] for chunk in context_chunks) / len(context_chunks) if context_chunks else 0
             })
 
-            # Step 5: Build sources list including flashcards
+            # Step 5: Build sources list including flashcards and images
             sources = []
             for chunk in context_chunks:
                 if chunk.get('source_type') == 'flashcard':
@@ -348,6 +371,16 @@ class RadiologyRAGSystem:
                         'card_id': chunk['metadata'].get('card_id'),
                         'deck_name': chunk['metadata'].get('source', '').replace('Flashcard: ', ''),
                         'content': chunk['text'][:100] + "..." if len(chunk['text']) > 100 else chunk['text'],
+                        'tags': chunk['metadata'].get('tags', [])
+                    })
+                elif chunk.get('source_type') == 'image':
+                    sources.append({
+                        'type': 'image',
+                        'title': f"Image: {chunk['metadata'].get('modality', 'Medical')} - {chunk['metadata'].get('body_part', 'Unknown')}",
+                        'image_id': chunk['metadata'].get('image_id'),
+                        'file_path': chunk['metadata'].get('source', '').replace('Image: ', ''),
+                        'modality': chunk['metadata'].get('modality', ''),
+                        'body_part': chunk['metadata'].get('body_part', ''),
                         'tags': chunk['metadata'].get('tags', [])
                     })
                 else:
@@ -486,4 +519,37 @@ class RadiologyRAGSystem:
 
         except Exception as e:
             self.logger.warning(f"Error searching flashcards: {e}")
+            return []
+
+    def _search_images(self, query: str, n_results: int = 2) -> List[Dict]:
+        """Search for relevant images based on query"""
+        try:
+            # Import image processor
+            import sys
+            import os
+            sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+            from multimedia.image_processor import RadiologyImageManager
+            image_manager = RadiologyImageManager()
+
+            # Use the image manager's search functionality
+            results = image_manager.search_images(query, limit=n_results)
+
+            # Convert to list format
+            image_results = []
+            for result in results:
+                image_results.append({
+                    'image_id': result.image_id,
+                    'file_path': result.file_path,
+                    'modality': result.modality,
+                    'body_part': result.body_part,
+                    'tags': result.tags,
+                    'extracted_text': result.extracted_text,
+                    'similarity': result.metadata.get('similarity_score', 0.0)
+                })
+
+            return image_results
+
+        except Exception as e:
+            self.logger.warning(f"Error searching images: {e}")
             return []
